@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2014 Free Software Foundation, Inc.
+Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -232,9 +232,17 @@ This tells the assembler to accept DSP Release 1 instructions.
 <dt><code>-mdspr2</code></dt>
 <dt><code>-mno-dspr2</code></dt>
 <dd><p>Generate code for the DSP Release 2 Application Specific Extension.
-This option implies -mdsp.
+This option implies &lsquo;<samp>-mdsp</samp>&rsquo;.
 This tells the assembler to accept DSP Release 2 instructions.
 &lsquo;<samp>-mno-dspr2</samp>&rsquo; turns off this option.
+</p>
+</dd>
+<dt><code>-mdspr3</code></dt>
+<dt><code>-mno-dspr3</code></dt>
+<dd><p>Generate code for the DSP Release 3 Application Specific Extension.
+This option implies &lsquo;<samp>-mdsp</samp>&rsquo; and &lsquo;<samp>-mdspr2</samp>&rsquo;.
+This tells the assembler to accept DSP Release 3 instructions.
+&lsquo;<samp>-mno-dspr3</samp>&rsquo; turns off this option.
 </p>
 </dd>
 <dt><code>-mmt</code></dt>
@@ -432,6 +440,9 @@ m14kec,
 1004kf2_1,
 1004kf,
 1004kf1_1,
+interaptiv,
+m5100,
+m5101,
 p5600,
 5kc,
 5kf,
@@ -439,12 +450,15 @@ p5600,
 25kf,
 sb1,
 sb1a,
+i6400,
+p6600,
 loongson2e,
 loongson2f,
 loongson3a,
 octeon,
 octeon+,
 octeon2,
+octeon3,
 xlr,
 xlp
 </p></blockquote>

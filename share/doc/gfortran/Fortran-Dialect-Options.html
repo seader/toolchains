@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1999-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1999-2016 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -116,6 +116,26 @@ in fixed form sources.  If the <samp>-fd-lines-as-code</samp> option is
 given they are treated as if the first column contained a blank.  If the
 <samp>-fd-lines-as-comments</samp> option is given, they are treated as
 comment lines.
+</p>
+</dd>
+<dt><code>-fdec</code></dt>
+<dd><a name="index-fdec"></a>
+<p>DEC compatibility mode. Enables extensions and other features that mimic
+the default behavior of older compilers (such as DEC).
+These features are non-standard and should be avoided at all costs.
+For details on GNU Fortran&rsquo;s implementation of these extensions see the 
+full documentation.
+</p>
+<p>Other flags enabled by this switch are:
+<samp>-fdollar-ok</samp> <samp>-fcray-pointer</samp> <samp>-fdec-structure</samp>
+</p>
+</dd>
+<dt><code>-fdec-structure</code></dt>
+<dd><a name="index-fdec_002dstructure"></a>
+<p>Enable DEC <code>STRUCTURE</code> and <code>RECORD</code> as well as <code>UNION</code>,
+<code>MAP</code>, and dot (&rsquo;.&rsquo;) as a member separator (in addition to &rsquo;%&rsquo;). This is
+provided for compatibility only; Fortran 90 derived types should be used
+instead where possible.
 </p>
 </dd>
 <dt><code>-fdollar-ok</code></dt>

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -86,12 +86,16 @@ regardless of what language your program is in.  For example, you
 might compile a file <samp>firstClass.C</samp> like this:
 </p>
 <div class="smallexample">
-<pre class="smallexample">g++ -g -frepo -O -c firstClass.C
+<pre class="smallexample">g++ -g -fstrict-enums -O -c firstClass.C
 </pre></div>
 
-<p>In this example, only <samp>-frepo</samp> is an option meant
+<p>In this example, only <samp>-fstrict-enums</samp> is an option meant
 only for C++ programs; you can use the other options with any
 language supported by GCC.
+</p>
+<p>Some options for compiling C programs, such as <samp>-std</samp>, are also
+relevant for C++ programs.
+See <a href="C-Dialect-Options.html#C-Dialect-Options">Options Controlling C Dialect</a>.
 </p>
 <p>Here is a list of options that are <em>only</em> for compiling C++ programs:
 </p>
@@ -104,7 +108,7 @@ language supported by GCC.
 the C++ ABI specification.  Therefore, the ABI obtained using version 0
 will change in different versions of G++ as ABI bugs are fixed.
 </p>
-<p>Version 1 is the version of the C++ ABI that first appeared in G++ 3.2.  
+<p>Version 1 is the version of the C++ ABI that first appeared in G++ 3.2.
 </p>
 <p>Version 2 is the version of the C++ ABI that first appeared in G++
 3.4, and was the default through G++ 4.9.
@@ -135,6 +139,10 @@ behavior of function types with function-cv-qualifiers.
 <p>Version 9, which first appeared in G++ 5.2, corrects the alignment of
 <code>nullptr_t</code>.
 </p>
+<p>Version 10, which first appeared in G++ 6.1, adds mangling of
+attributes that affect type identity, such as ia32 calling convention
+attributes (e.g. &lsquo;<samp>stdcall</samp>&rsquo;).
+</p>
 <p>See also <samp>-Wabi</samp>.
 </p>
 </dd>
@@ -145,10 +153,15 @@ works around mangling changes by creating an alias with the correct
 mangled name when defining a symbol with an incorrect mangled name.
 This switch specifies which ABI version to use for the alias.
 </p>
-<p>With <samp>-fabi-version=0</samp> (the default), this defaults to 2.  If
-another ABI version is explicitly selected, this defaults to 0.
+<p>With <samp>-fabi-version=0</samp> (the default), this defaults to 8 (GCC 5
+compatibility).  If another ABI version is explicitly selected, this
+defaults to 0.  For compatibility with GCC versions 3.2 through 4.9,
+use <samp>-fabi-compat-version=2</samp>.
 </p>
-<p>The compatibility version is also set by <samp>-Wabi=<var>n</var></samp>.
+<p>If this option is not provided but <samp>-Wabi=<var>n</var></samp> is, that
+version is used for compatibility aliases.  If this option is provided
+along with <samp>-Wabi</samp> (without the version), the version from this
+option is used for the warning.
 </p>
 </dd>
 <dt><code>-fno-access-control</code></dt>
@@ -169,6 +182,17 @@ return value even without this option.  In all other cases, when
 exhaustion is signalled by throwing <code>std::bad_alloc</code>.  See also
 &lsquo;<samp>new (nothrow)</samp>&rsquo;.
 </p>
+</dd>
+<dt><code>-fconcepts</code></dt>
+<dd><a name="index-fconcepts"></a>
+<p>Enable support for the C++ Extensions for Concepts Technical
+Specification, ISO 19217 (2015), which allows code like
+</p>
+<div class="smallexample">
+<pre class="smallexample">template &lt;class T&gt; concept bool Addable = requires (T t) { t + t; };
+template &lt;Addable T&gt; T add (T a, T b) { return a + b; }
+</pre></div>
+
 </dd>
 <dt><code>-fconstexpr-depth=<var>n</var></code></dt>
 <dd><a name="index-fconstexpr_002ddepth"></a>
@@ -279,7 +303,8 @@ otherwise be invalid, or have different behavior.
 <dd><a name="index-fno_002dgnu_002dkeywords"></a>
 <p>Do not recognize <code>typeof</code> as a keyword, so that code can use this
 word as an identifier.  You can use the keyword <code>__typeof__</code> instead.
-<samp>-ansi</samp> implies <samp>-fno-gnu-keywords</samp>.
+This option is implied by the strict ISO C++ dialects: <samp>-ansi</samp>,
+<samp>-std=c++98</samp>, <samp>-std=c++11</samp>, etc.
 </p>
 </dd>
 <dt><code>-fno-implicit-templates</code></dt>
@@ -396,12 +421,6 @@ to make deallocation faster.  Enabled by default under
 warns about places that might want to add a definition.
 </p>
 </dd>
-<dt><code>-fstats</code></dt>
-<dd><a name="index-fstats"></a>
-<p>Emit statistics about front-end processing at the end of the compilation.
-This information is generally only useful to the G++ development team.
-</p>
-</dd>
 <dt><code>-fstrict-enums</code></dt>
 <dd><a name="index-fstrict_002denums"></a>
 <p>Allow the compiler to optimize using the assumption that a value of
@@ -513,64 +532,6 @@ objects may not compare equal.  When this flag is given, it is a
 violation of the ODR to define types with the same name differently.
 </p>
 </dd>
-<dt><code>-fvtable-verify=<span class="roman">[</span>std<span class="roman">|</span>preinit<span class="roman">|</span>none<span class="roman">]</span></code></dt>
-<dd><a name="index-fvtable_002dverify"></a>
-<p>Turn on (or off, if using <samp>-fvtable-verify=none</samp>) the security
-feature that verifies at run time, for every virtual call, that
-the vtable pointer through which the call is made is valid for the type of
-the object, and has not been corrupted or overwritten.  If an invalid vtable
-pointer is detected at run time, an error is reported and execution of the
-program is immediately halted.
-</p>
-<p>This option causes run-time data structures to be built at program startup,
-which are used for verifying the vtable pointers.  
-The options &lsquo;<samp>std</samp>&rsquo; and &lsquo;<samp>preinit</samp>&rsquo;
-control the timing of when these data structures are built.  In both cases the
-data structures are built before execution reaches <code>main</code>.  Using
-<samp>-fvtable-verify=std</samp> causes the data structures to be built after
-shared libraries have been loaded and initialized.
-<samp>-fvtable-verify=preinit</samp> causes them to be built before shared
-libraries have been loaded and initialized.
-</p>
-<p>If this option appears multiple times in the command line with different
-values specified, &lsquo;<samp>none</samp>&rsquo; takes highest priority over both &lsquo;<samp>std</samp>&rsquo; and
-&lsquo;<samp>preinit</samp>&rsquo;; &lsquo;<samp>preinit</samp>&rsquo; takes priority over &lsquo;<samp>std</samp>&rsquo;.
-</p>
-</dd>
-<dt><code>-fvtv-debug</code></dt>
-<dd><a name="index-fvtv_002ddebug"></a>
-<p>When used in conjunction with <samp>-fvtable-verify=std</samp> or 
-<samp>-fvtable-verify=preinit</samp>, causes debug versions of the 
-runtime functions for the vtable verification feature to be called.  
-This flag also causes the compiler to log information about which 
-vtable pointers it finds for each class.
-This information is written to a file named <samp>vtv_set_ptr_data.log</samp> 
-in the directory named by the environment variable <code>VTV_LOGS_DIR</code> 
-if that is defined or the current working directory otherwise.
-</p>
-<p>Note:  This feature <em>appends</em> data to the log file. If you want a fresh log
-file, be sure to delete any existing one.
-</p>
-</dd>
-<dt><code>-fvtv-counts</code></dt>
-<dd><a name="index-fvtv_002dcounts"></a>
-<p>This is a debugging flag.  When used in conjunction with
-<samp>-fvtable-verify=std</samp> or <samp>-fvtable-verify=preinit</samp>, this
-causes the compiler to keep track of the total number of virtual calls
-it encounters and the number of verifications it inserts.  It also
-counts the number of calls to certain run-time library functions
-that it inserts and logs this information for each compilation unit.
-The compiler writes this information to a file named
-<samp>vtv_count_data.log</samp> in the directory named by the environment
-variable <code>VTV_LOGS_DIR</code> if that is defined or the current working
-directory otherwise.  It also counts the size of the vtable pointer sets
-for each class, and writes this information to <samp>vtv_class_set_sizes.log</samp>
-in the same directory.
-</p>
-<p>Note:  This feature <em>appends</em> data to the log files.  To get fresh log
-files, be sure to delete any existing ones.
-</p>
-</dd>
 <dt><code>-fno-weak</code></dt>
 <dd><a name="index-fno_002dweak"></a>
 <p>Do not use weak symbol support, even if it is provided by the linker.
@@ -595,13 +556,25 @@ have meanings only for C++ programs:
 <dt><code>-Wabi <span class="roman">(C, Objective-C, C++ and Objective-C++ only)</span></code></dt>
 <dd><a name="index-Wabi"></a>
 <a name="index-Wno_002dabi"></a>
-<p>When an explicit <samp>-fabi-version=<var>n</var></samp> option is used, causes
-G++ to warn when it generates code that is probably not compatible with the
-vendor-neutral C++ ABI.  Since G++ now defaults to
-<samp>-fabi-version=0</samp>, <samp>-Wabi</samp> has no effect unless either
-an older ABI version is selected (with <samp>-fabi-version=<var>n</var></samp>)
-or an older compatibility version is selected (with
-<samp>-Wabi=<var>n</var></samp> or <samp>-fabi-compat-version=<var>n</var></samp>).
+<p>Warn when G++ it generates code that is probably not compatible with
+the vendor-neutral C++ ABI.  Since G++ now defaults to updating the
+ABI with each major release, normally <samp>-Wabi</samp> will warn only if
+there is a check added later in a release series for an ABI issue
+discovered since the initial release.  <samp>-Wabi</samp> will warn about
+more things if an older ABI version is selected (with
+<samp>-fabi-version=<var>n</var></samp>).
+</p>
+<p><samp>-Wabi</samp> can also be used with an explicit version number to
+warn about compatibility with a particular <samp>-fabi-version</samp>
+level, e.g. <samp>-Wabi=2</samp> to warn about changes relative to
+<samp>-fabi-version=2</samp>.
+</p>
+<p>If an explicit version number is provided and
+<samp>-fabi-compat-version</samp> is not specified, the version number
+from this option is used for compatibility aliases.  If no explicit
+version number is provided with this option, but
+<samp>-fabi-compat-version</samp> is specified, that version number is
+used for ABI warnings.
 </p>
 <p>Although an effort has been made to warn about
 all such cases, there are probably some cases that are not warned about,
@@ -613,13 +586,7 @@ is compatible.
 concerned about the fact that code generated by G++ may not be binary
 compatible with code generated by other compilers.
 </p>
-<p><samp>-Wabi</samp> can also be used with an explicit version number to
-warn about compatibility with a particular <samp>-fabi-version</samp>
-level, e.g. <samp>-Wabi=2</samp> to warn about changes relative to
-<samp>-fabi-version=2</samp>.  Specifying a version number also sets
-<samp>-fabi-compat-version=<var>n</var></samp>.
-</p>
-<p>The known incompatibilities in <samp>-fabi-version=2</samp> (which was the
+<p>Known incompatibilities in <samp>-fabi-version=2</samp> (which was the
 default from GCC 3.4 to 4.9) include:
 </p>
 <ul>
@@ -672,7 +639,15 @@ function with a <code>nullptr_t</code> parameter, as parameters have a
 minimum alignment.
 
 <p>This was fixed in <samp>-fabi-version=9</samp>, the default for GCC 5.2.
-</p></li></ul>
+</p>
+</li><li> Target-specific attributes that affect the identity of a type, such as
+ia32 calling conventions on a function type (stdcall, regparm, etc.),
+did not affect the mangled name, leading to name collisions when
+function pointers were used as template arguments.
+
+<p>This was fixed in <samp>-fabi-version=10</samp>, the default for GCC 6.1.
+</p>
+</li></ul>
 
 <p>It also warns about psABI-related changes.  The known psABI changes at this
 point include:
@@ -737,7 +712,7 @@ For example:
 
 int main() {
   int64_t i64 = 123;
-  printf(&quot;My int64: %&quot;PRId64&quot;\n&quot;, i64);
+  printf(&quot;My int64: %&quot; PRId64&quot;\n&quot;, i64);
 }
 </pre></div>
 
@@ -746,10 +721,20 @@ int main() {
 <p>This warning is enabled by default.
 </p>
 </dd>
+<dt><code>-Wlto-type-mismatch</code></dt>
+<dd><a name="index-Wlto_002dtype_002dmismatch"></a>
+<a name="index-Wno_002dlto_002dtype_002dmismatch"></a>
+
+<p>During the link-time optimization warn about type mismatches in
+global declarations from different compilation units.
+Requires <samp>-flto</samp> to be enabled.  Enabled by default.
+</p>
+</dd>
 <dt><code>-Wnarrowing <span class="roman">(C++ and Objective-C++ only)</span></code></dt>
 <dd><a name="index-Wnarrowing"></a>
 <a name="index-Wno_002dnarrowing"></a>
-<p>Warn when a narrowing conversion prohibited by C++11 occurs within
+<p>With <samp>-std=gnu++98</samp> or <samp>-std=c++98</samp>, warn when a narrowing
+conversion prohibited by C++11 occurs within
 &lsquo;<samp>{ }</samp>&rsquo;, e.g.
 </p>
 <div class="smallexample">
@@ -758,10 +743,13 @@ int main() {
 
 <p>This flag is included in <samp>-Wall</samp> and <samp>-Wc++11-compat</samp>.
 </p>
-<p>With <samp>-std=c++11</samp>, <samp>-Wno-narrowing</samp> suppresses the diagnostic
-required by the standard.  Note that this does not affect the meaning
-of well-formed code; narrowing conversions are still considered
-ill-formed in SFINAE context.
+<p>When a later standard is in effect, e.g. when using <samp>-std=c++11</samp>,
+narrowing conversions are diagnosed by default, as required by the standard.
+A narrowing conversion from a constant produces an error,
+and a narrowing conversion from a non-constant produces a warning,
+but <samp>-Wno-narrowing</samp> suppresses the diagnostic.
+Note that this does not affect the meaning of well-formed code;
+narrowing conversions are still considered ill-formed in SFINAE contexts.
 </p>
 </dd>
 <dt><code>-Wnoexcept <span class="roman">(C++ and Objective-C++ only)</span></code></dt>
@@ -935,6 +923,48 @@ to a plain pointer.
 enumerated type to a signed type, over a conversion to an unsigned type of
 the same size.  Previous versions of G++ tried to preserve
 unsignedness, but the standard mandates the current behavior.
+</p>
+</dd>
+<dt><code>-Wtemplates <span class="roman">(C++ and Objective-C++ only)</span></code></dt>
+<dd><a name="index-Wtemplates"></a>
+<p>Warn when a primary template declaration is encountered.  Some coding
+rules disallow templates, and this may be used to enforce that rule.
+The warning is inactive inside a system header file, such as the STL, so
+one can still use the STL.  One may also instantiate or specialize
+templates.
+</p>
+</dd>
+<dt><code>-Wmultiple-inheritance <span class="roman">(C++ and Objective-C++ only)</span></code></dt>
+<dd><a name="index-Wmultiple_002dinheritance"></a>
+<p>Warn when a class is defined with multiple direct base classes.  Some
+coding rules disallow multiple inheritance, and this may be used to
+enforce that rule.  The warning is inactive inside a system header file,
+such as the STL, so one can still use the STL.  One may also define
+classes that indirectly use multiple inheritance.
+</p>
+</dd>
+<dt><code>-Wvirtual-inheritance</code></dt>
+<dd><a name="index-Wvirtual_002dinheritance"></a>
+<p>Warn when a class is defined with a virtual direct base classe.  Some
+coding rules disallow multiple inheritance, and this may be used to
+enforce that rule.  The warning is inactive inside a system header file,
+such as the STL, so one can still use the STL.  One may also define
+classes that indirectly use virtual inheritance.
+</p>
+</dd>
+<dt><code>-Wnamespaces</code></dt>
+<dd><a name="index-Wnamespaces"></a>
+<p>Warn when a namespace definition is opened.  Some coding rules disallow
+namespaces, and this may be used to enforce that rule.  The warning is
+inactive inside a system header file, such as the STL, so one can still
+use the STL.  One may also use using directives and qualified names.
+</p>
+</dd>
+<dt><code>-Wno-terminate <span class="roman">(C++ and Objective-C++ only)</span></code></dt>
+<dd><a name="index-Wterminate"></a>
+<a name="index-Wno_002dterminate"></a>
+<p>Disable the warning about a throw-expression that will immediately
+result in a call to <code>terminate</code>.
 </p></dd>
 </dl>
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Next: <a href="Extended-Asm.html#Extended-Asm" accesskey="n" rel="next">Extended
 </div>
 <hr>
 <a name="Basic-Asm-_002d_002d_002d-Assembler-Instructions-Without-Operands"></a>
-<h4 class="subsection">6.43.1 Basic Asm &mdash; Assembler Instructions Without Operands</h4>
+<h4 class="subsection">6.44.1 Basic Asm &mdash; Assembler Instructions Without Operands</h4>
 <a name="index-basic-asm"></a>
 <a name="index-assembly-language-in-C_002c-basic"></a>
 
@@ -119,10 +119,10 @@ note that some assembler dialects use semicolons to start a comment.
 
 <a name="Remarks"></a>
 <h4 class="subsubheading">Remarks</h4>
-<p>Using extended <code>asm</code> typically produces smaller, safer, and more
-efficient code, and in most cases it is a better solution than basic
-<code>asm</code>.  However, there are two situations where only basic <code>asm</code>
-can be used:
+<p>Using extended <code>asm</code> (see <a href="Extended-Asm.html#Extended-Asm">Extended Asm</a>) typically produces
+smaller, safer, and more efficient code, and in most cases it is a
+better solution than basic <code>asm</code>.  However, there are two
+situations where only basic <code>asm</code> can be used:
 </p>
 <ul>
 <li> Extended <code>asm</code> statements have to be inside a C
@@ -157,9 +157,24 @@ assembly code when optimizing. This can lead to unexpected duplicate
 symbol errors during compilation if your assembly code defines symbols or 
 labels.
 </p>
-<p>Since GCC does not parse the <var>AssemblerInstructions</var>, it has no 
-visibility of any symbols it references. This may result in GCC discarding 
-those symbols as unreferenced.
+<p><strong>Warning:</strong> The C standards do not specify semantics for <code>asm</code>,
+making it a potential source of incompatibilities between compilers.  These
+incompatibilities may not produce compiler warnings/errors.
+</p>
+<p>GCC does not parse basic <code>asm</code>&rsquo;s <var>AssemblerInstructions</var>, which
+means there is no way to communicate to the compiler what is happening
+inside them.  GCC has no visibility of symbols in the <code>asm</code> and may
+discard them as unreferenced.  It also does not know about side effects of
+the assembler code, such as modifications to memory or registers.  Unlike
+some compilers, GCC assumes that no changes to either memory or registers
+occur.  This assumption may change in a future release.
+</p>
+<p>To avoid complications from future changes to the semantics and the
+compatibility issues between compilers, consider replacing basic <code>asm</code>
+with extended <code>asm</code>.  See
+<a href="https://gcc.gnu.org/wiki/ConvertBasicAsmToExtended">How to convert
+from basic asm to extended asm</a> for information about how to perform this
+conversion.
 </p>
 <p>The compiler copies the assembler instructions in a basic <code>asm</code> 
 verbatim to the assembly language output file, without 

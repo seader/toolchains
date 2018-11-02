@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Next: <a href="AVR-Options.html#AVR-Options" accesskey="n" rel="next">AVR Option
 </div>
 <hr>
 <a name="ARM-Options-1"></a>
-<h4 class="subsection">3.17.4 ARM Options</h4>
+<h4 class="subsection">3.18.4 ARM Options</h4>
 <a name="index-ARM-options"></a>
 
 <p>These &lsquo;<samp>-m</samp>&rsquo; options are defined for the ARM port:
@@ -161,18 +161,41 @@ name to determine what kind of instructions it can emit when generating
 assembly code.  This option can be used in conjunction with or instead
 of the <samp>-mcpu=</samp> option.  Permissible names are: &lsquo;<samp>armv2</samp>&rsquo;,
 &lsquo;<samp>armv2a</samp>&rsquo;, &lsquo;<samp>armv3</samp>&rsquo;, &lsquo;<samp>armv3m</samp>&rsquo;, &lsquo;<samp>armv4</samp>&rsquo;, &lsquo;<samp>armv4t</samp>&rsquo;,
-&lsquo;<samp>armv5</samp>&rsquo;, &lsquo;<samp>armv5t</samp>&rsquo;, &lsquo;<samp>armv5e</samp>&rsquo;, &lsquo;<samp>armv5te</samp>&rsquo;,
-&lsquo;<samp>armv6</samp>&rsquo;, &lsquo;<samp>armv6j</samp>&rsquo;,
-&lsquo;<samp>armv6t2</samp>&rsquo;, &lsquo;<samp>armv6z</samp>&rsquo;, &lsquo;<samp>armv6kz</samp>&rsquo;, &lsquo;<samp>armv6-m</samp>&rsquo;,
-&lsquo;<samp>armv7</samp>&rsquo;, &lsquo;<samp>armv7-a</samp>&rsquo;, &lsquo;<samp>armv7-r</samp>&rsquo;, &lsquo;<samp>armv7-m</samp>&rsquo;, &lsquo;<samp>armv7e-m</samp>&rsquo;,
+&lsquo;<samp>armv5</samp>&rsquo;, &lsquo;<samp>armv5e</samp>&rsquo;, &lsquo;<samp>armv5t</samp>&rsquo;, &lsquo;<samp>armv5te</samp>&rsquo;,
+&lsquo;<samp>armv6</samp>&rsquo;, &lsquo;<samp>armv6-m</samp>&rsquo;, &lsquo;<samp>armv6j</samp>&rsquo;, &lsquo;<samp>armv6k</samp>&rsquo;,
+&lsquo;<samp>armv6kz</samp>&rsquo;, &lsquo;<samp>armv6s-m</samp>&rsquo;,
+&lsquo;<samp>armv6t2</samp>&rsquo;, &lsquo;<samp>armv6z</samp>&rsquo;, &lsquo;<samp>armv6zk</samp>&rsquo;,
+&lsquo;<samp>armv7</samp>&rsquo;, &lsquo;<samp>armv7-a</samp>&rsquo;, &lsquo;<samp>armv7-m</samp>&rsquo;, &lsquo;<samp>armv7-r</samp>&rsquo;, &lsquo;<samp>armv7e-m</samp>&rsquo;,
 &lsquo;<samp>armv7ve</samp>&rsquo;, &lsquo;<samp>armv8-a</samp>&rsquo;, &lsquo;<samp>armv8-a+crc</samp>&rsquo;, &lsquo;<samp>armv8.1-a</samp>&rsquo;,
-&lsquo;<samp>armv8.1-a+crc</samp>&rsquo;, &lsquo;<samp>iwmmxt</samp>&rsquo;, &lsquo;<samp>iwmmxt2</samp>&rsquo;, &lsquo;<samp>ep9312</samp>&rsquo;.
+&lsquo;<samp>armv8.1-a+crc</samp>&rsquo;, &lsquo;<samp>armv8-m.base</samp>&rsquo;, &lsquo;<samp>armv8-m.main</samp>&rsquo;,
+&lsquo;<samp>armv8-m.main+dsp</samp>&rsquo;, &lsquo;<samp>iwmmxt</samp>&rsquo;, &lsquo;<samp>iwmmxt2</samp>&rsquo;.
 </p>
-<p><samp>-march=armv7ve</samp> is the armv7-a architecture with virtualization
+<p>Architecture revisions older than &lsquo;<samp>armv4t</samp>&rsquo; are deprecated.
+</p>
+<p><samp>-march=armv6s-m</samp> is the &lsquo;<samp>armv6-m</samp>&rsquo; architecture with support for
+the (now mandatory) SVC instruction.
+</p>
+<p><samp>-march=armv6zk</samp> is an alias for &lsquo;<samp>armv6kz</samp>&rsquo;, existing for backwards
+compatibility.
+</p>
+<p><samp>-march=armv7ve</samp> is the &lsquo;<samp>armv7-a</samp>&rsquo; architecture with virtualization
 extensions.
 </p>
 <p><samp>-march=armv8-a+crc</samp> enables code generation for the ARMv8-A
 architecture together with the optional CRC32 extensions.
+</p>
+<p><samp>-march=armv8.1-a</samp> enables compiler support for the ARMv8.1-A
+architecture.  This also enables the features provided by
+<samp>-march=armv8-a+crc</samp>.
+</p>
+<p><samp>-march=armv8.2-a</samp> enables compiler support for the ARMv8.2-A
+architecture.  This also enables the features provided by
+<samp>-march=armv8.1-a</samp>.
+</p>
+<p><samp>-march=armv8.2-a+fp16</samp> enables compiler support for the
+ARMv8.2-A architecture with the optional FP16 instructions extension.
+This also enables the features provided by <samp>-march=armv8.1-a</samp>
+and implies <samp>-mfp16-format=ieee</samp>.
 </p>
 <p><samp>-march=native</samp> causes the compiler to auto-detect the architecture
 of the build computer.  At present, this feature is only supported on
@@ -206,8 +229,10 @@ Permissible names are: &lsquo;<samp>arm2</samp>&rsquo;, &lsquo;<samp>arm250</sam
 &lsquo;<samp>generic-armv7-a</samp>&rsquo;, &lsquo;<samp>cortex-a5</samp>&rsquo;, &lsquo;<samp>cortex-a7</samp>&rsquo;, &lsquo;<samp>cortex-a8</samp>&rsquo;,
 &lsquo;<samp>cortex-a9</samp>&rsquo;, &lsquo;<samp>cortex-a12</samp>&rsquo;, &lsquo;<samp>cortex-a15</samp>&rsquo;, &lsquo;<samp>cortex-a17</samp>&rsquo;,
 &lsquo;<samp>cortex-a32</samp>&rsquo;, &lsquo;<samp>cortex-a35</samp>&rsquo;, &lsquo;<samp>cortex-a53</samp>&rsquo;, &lsquo;<samp>cortex-a57</samp>&rsquo;,
-&lsquo;<samp>cortex-a72</samp>&rsquo;, &lsquo;<samp>cortex-r4</samp>&rsquo;,
+&lsquo;<samp>cortex-a72</samp>&rsquo;, &lsquo;<samp>cortex-a73</samp>&rsquo;, &lsquo;<samp>cortex-r4</samp>&rsquo;,
 &lsquo;<samp>cortex-r4f</samp>&rsquo;, &lsquo;<samp>cortex-r5</samp>&rsquo;, &lsquo;<samp>cortex-r7</samp>&rsquo;, &lsquo;<samp>cortex-r8</samp>&rsquo;,
+&lsquo;<samp>cortex-m33</samp>&rsquo;,
+&lsquo;<samp>cortex-m23</samp>&rsquo;,
 &lsquo;<samp>cortex-m7</samp>&rsquo;,
 &lsquo;<samp>cortex-m4</samp>&rsquo;,
 &lsquo;<samp>cortex-m3</samp>&rsquo;,
@@ -228,7 +253,8 @@ Permissible names are: &lsquo;<samp>arm2</samp>&rsquo;, &lsquo;<samp>arm250</sam
 <p>Additionally, this option can specify that GCC should tune the performance
 of the code for a big.LITTLE system.  Permissible names are:
 &lsquo;<samp>cortex-a15.cortex-a7</samp>&rsquo;, &lsquo;<samp>cortex-a17.cortex-a7</samp>&rsquo;,
-&lsquo;<samp>cortex-a57.cortex-a53</samp>&rsquo;, &lsquo;<samp>cortex-a72.cortex-a53</samp>&rsquo;.
+&lsquo;<samp>cortex-a57.cortex-a53</samp>&rsquo;, &lsquo;<samp>cortex-a72.cortex-a53</samp>&rsquo;,
+&lsquo;<samp>cortex-a72.cortex-a35</samp>&rsquo;, &lsquo;<samp>cortex-a73.cortex-a53</samp>&rsquo;.
 </p>
 <p><samp>-mtune=generic-<var>arch</var></samp> specifies that GCC should tune the
 performance for a blend of processors within architecture <var>arch</var>.
@@ -266,14 +292,16 @@ is unsuccessful the option has no effect.
 </p>
 </dd>
 <dt><code>-mfpu=<var>name</var></code></dt>
-<dd><a name="index-mfpu"></a>
+<dd><a name="index-mfpu-1"></a>
 <p>This specifies what floating-point hardware (or hardware emulation) is
-available on the target.  Permissible names are: &lsquo;<samp>vfp</samp>&rsquo;, &lsquo;<samp>vfpv3</samp>&rsquo;,
+available on the target.  Permissible names are: &lsquo;<samp>vfpv2</samp>&rsquo;, &lsquo;<samp>vfpv3</samp>&rsquo;,
 &lsquo;<samp>vfpv3-fp16</samp>&rsquo;, &lsquo;<samp>vfpv3-d16</samp>&rsquo;, &lsquo;<samp>vfpv3-d16-fp16</samp>&rsquo;, &lsquo;<samp>vfpv3xd</samp>&rsquo;,
-&lsquo;<samp>vfpv3xd-fp16</samp>&rsquo;, &lsquo;<samp>neon</samp>&rsquo;, &lsquo;<samp>neon-fp16</samp>&rsquo;, &lsquo;<samp>vfpv4</samp>&rsquo;,
+&lsquo;<samp>vfpv3xd-fp16</samp>&rsquo;, &lsquo;<samp>neon-vfpv3</samp>&rsquo;, &lsquo;<samp>neon-fp16</samp>&rsquo;, &lsquo;<samp>vfpv4</samp>&rsquo;,
 &lsquo;<samp>vfpv4-d16</samp>&rsquo;, &lsquo;<samp>fpv4-sp-d16</samp>&rsquo;, &lsquo;<samp>neon-vfpv4</samp>&rsquo;,
 &lsquo;<samp>fpv5-d16</samp>&rsquo;, &lsquo;<samp>fpv5-sp-d16</samp>&rsquo;,
 &lsquo;<samp>fp-armv8</samp>&rsquo;, &lsquo;<samp>neon-fp-armv8</samp>&rsquo; and &lsquo;<samp>crypto-neon-fp-armv8</samp>&rsquo;.
+Note that &lsquo;<samp>neon</samp>&rsquo; is an alias for &lsquo;<samp>neon-vfpv3</samp>&rsquo; and &lsquo;<samp>vfp</samp>&rsquo;
+is an alias for &lsquo;<samp>vfpv2</samp>&rsquo;.
 </p>
 <p>If <samp>-msoft-float</samp> is specified this specifies the format of
 floating-point values.
@@ -285,6 +313,8 @@ operations are not generated by GCC&rsquo;s auto-vectorization pass unless
 because NEON hardware does not fully implement the IEEE 754 standard for
 floating-point arithmetic (in particular denormal values are treated as
 zero), so the use of NEON instructions may lead to a loss of precision.
+</p>
+<p>You can also set the fpu name at function level by using the <code>target(&quot;fpu=&quot;)</code> function attributes (see <a href="ARM-Function-Attributes.html#ARM-Function-Attributes">ARM Function Attributes</a>) or pragmas (see <a href="Function-Specific-Option-Pragmas.html#Function-Specific-Option-Pragmas">Function Specific Option Pragmas</a>).
 </p>
 </dd>
 <dt><code>-mfp16-format=<var>name</var></code></dt>
@@ -365,9 +395,12 @@ otherwise the default is &lsquo;<samp>R10</samp>&rsquo;.
 </dd>
 <dt><code>-mpic-data-is-text-relative</code></dt>
 <dd><a name="index-mpic_002ddata_002dis_002dtext_002drelative"></a>
-<p>Assume that each data segments are relative to text segment at load time.
-Therefore, it permits addressing data using PC-relative operations.
-This option is on by default for targets other than VxWorks RTP.
+<p>Assume that the displacement between the text and data segments is fixed
+at static link time.  This permits using PC-relative addressing
+operations to access data known to be in the data segment.  For
+non-VxWorks RTP targets, this option is enabled by default.  When
+disabled on such targets, it will enable <samp>-msingle-pic-base</samp> by
+default.
 </p>
 </dd>
 <dt><code>-mpoke-function-name</code></dt>
@@ -488,10 +521,10 @@ generating these instructions.  This option is enabled by default when
 <a name="index-mno_002dunaligned_002daccess"></a>
 <p>Enables (or disables) reading and writing of 16- and 32- bit values
 from addresses that are not 16- or 32- bit aligned.  By default
-unaligned access is disabled for all pre-ARMv6 and all ARMv6-M
-architectures, and enabled for all other architectures.  If unaligned
-access is not enabled then words in packed data structures are
-accessed a byte at a time.
+unaligned access is disabled for all pre-ARMv6, all ARMv6-M and for
+ARMv8-M Baseline architectures, and enabled for all other
+architectures.  If unaligned access is not enabled then words in packed
+data structures are accessed a byte at a time.
 </p>
 <p>The ARM attribute <code>Tag_CPU_unaligned_access</code> is set in the
 generated object file to either true or false, depending upon the
@@ -536,6 +569,22 @@ set of instructions. This option is on by default for ARMv8 Thumb mode.
 an option used only for regression testing of the compiler and not
 intended for ordinary use in compiling code.  This option is disabled
 by default.
+</p>
+</dd>
+<dt><code>-mpure-code</code></dt>
+<dd><a name="index-mpure_002dcode"></a>
+<p>Do not allow constant data to be placed in code sections.
+Additionally, when compiling for ELF object format give all text sections the
+ELF processor-specific section attribute <code>SHF_ARM_PURECODE</code>.  This option
+is only available when generating non-pic code for M-profile targets with the
+MOVT instruction.
+</p>
+</dd>
+<dt><code>-mcmse</code></dt>
+<dd><a name="index-mcmse"></a>
+<p>Generate secure code as per the &quot;ARMv8-M Security Extensions: Requirements on
+Development Tools Engineering Specification&quot;, which can be found on
+<a href="http://infocenter.arm.com/help/topic/com.arm.doc.ecm0359818/ECM0359818_armv8m_security_extensions_reqs_on_dev_tools_1_0.pdf">http://infocenter.arm.com/help/topic/com.arm.doc.ecm0359818/ECM0359818_armv8m_security_extensions_reqs_on_dev_tools_1_0.pdf</a>.
 </p></dd>
 </dl>
 

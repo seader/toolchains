@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -136,7 +136,7 @@ five otherwise.  This is best for most machines.
 
 <dl>
 <dt><a name="index-WORD_005fREGISTER_005fOPERATIONS"></a>Macro: <strong>WORD_REGISTER_OPERATIONS</strong></dt>
-<dd><p>Define this macro if operations between registers with integral mode
+<dd><p>Define this macro to 1 if operations between registers with integral mode
 smaller than a word are always performed on the entire register.
 Most RISC machines have this property and most CISC machines do not.
 </p></dd></dl>
@@ -171,7 +171,7 @@ is larger then <var>mem_mode</var> but still smaller than <code>word_mode</code>
 
 <dl>
 <dt><a name="index-SHORT_005fIMMEDIATES_005fSIGN_005fEXTEND"></a>Macro: <strong>SHORT_IMMEDIATES_SIGN_EXTEND</strong></dt>
-<dd><p>Define this macro if loading short immediate values into registers sign
+<dd><p>Define this macro to 1 if loading short immediate values into registers sign
 extends.
 </p></dd></dl>
 
@@ -616,15 +616,15 @@ from shared libraries (DLLs).
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-TARGET_005fMD_005fASM_005fCLOBBERS"></a>Target Hook: <em>tree</em> <strong>TARGET_MD_ASM_CLOBBERS</strong> <em>(tree <var>outputs</var>, tree <var>inputs</var>, tree <var>clobbers</var>)</em></dt>
-<dd><p>This target hook should add to <var>clobbers</var> <code>STRING_CST</code> trees for
-any hard regs the port wishes to automatically clobber for an asm.
-It should return the result of the last <code>tree_cons</code> used to add a
-clobber.  The <var>outputs</var>, <var>inputs</var> and <var>clobber</var> lists are the
-corresponding parameters to the asm and may be inspected to avoid
-clobbering a register that is an input or output of the asm.  You can use
-<code>tree_overlaps_hard_reg_set</code>, declared in <samp>tree.h</samp>, to test
-for overlap with regards to asm-declared registers.
+<dt><a name="index-TARGET_005fMD_005fASM_005fADJUST"></a>Target Hook: <em>rtx_insn *</em> <strong>TARGET_MD_ASM_ADJUST</strong> <em>(vec&lt;rtx&gt;&amp; <var>outputs</var>, vec&lt;rtx&gt;&amp; <var>inputs</var>, vec&lt;const char *&gt;&amp; <var>constraints</var>, vec&lt;rtx&gt;&amp; <var>clobbers</var>, HARD_REG_SET&amp; <var>clobbered_regs</var>)</em></dt>
+<dd><p>This target hook may add <em>clobbers</em> to <var>clobbers</var> and
+<var>clobbered_regs</var> for any hard regs the port wishes to automatically
+clobber for an asm.  The <var>outputs</var> and <var>inputs</var> may be inspected
+to avoid clobbering a register that is already used by the asm.
+</p>
+<p>It may modify the <var>outputs</var>, <var>inputs</var>, and <var>constraints</var>
+as necessary for other pre-processing.  In this case the return value is
+a sequence of insns to emit after the asm.
 </p></dd></dl>
 
 <dl>
@@ -1125,28 +1125,28 @@ modes and they have different conditional execution capability, such as ARM.
 <dl>
 <dt><a name="index-TARGET_005fGEN_005fCCMP_005fFIRST"></a>Target Hook: <em>rtx</em> <strong>TARGET_GEN_CCMP_FIRST</strong> <em>(rtx *<var>prep_seq</var>, rtx *<var>gen_seq</var>, int <var>code</var>, tree <var>op0</var>, tree <var>op1</var>)</em></dt>
 <dd><p>This function prepares to emit a comparison insn for the first compare in a
- sequence of conditional comparisions.  It returns a appropriate <code>CC</code>
- for passing to <code>gen_ccmp_next</code> or <code>cbranch_optab</code>.  The insns to
- prepare the compare are saved in <var>prep_seq</var> and the compare insns are
- saved in <var>gen_seq</var>.  They will be emitted when all the compares in the
- the conditional comparision are generated without error.  <var>code</var> is
- the <code>rtx_code</code> of the compare for <var>op0</var> and <var>op1</var>.
+ sequence of conditional comparisions.  It returns an appropriate comparison
+ with <code>CC</code> for passing to <code>gen_ccmp_next</code> or <code>cbranch_optab</code>.
+ The insns to prepare the compare are saved in <var>prep_seq</var> and the compare
+ insns are saved in <var>gen_seq</var>.  They will be emitted when all the
+ compares in the the conditional comparision are generated without error.
+ <var>code</var> is the <code>rtx_code</code> of the compare for <var>op0</var> and <var>op1</var>.
 </p></dd></dl>
 
 <dl>
 <dt><a name="index-TARGET_005fGEN_005fCCMP_005fNEXT"></a>Target Hook: <em>rtx</em> <strong>TARGET_GEN_CCMP_NEXT</strong> <em>(rtx *<var>prep_seq</var>, rtx *<var>gen_seq</var>, rtx <var>prev</var>, int <var>cmp_code</var>, tree <var>op0</var>, tree <var>op1</var>, int <var>bit_code</var>)</em></dt>
-<dd><p>This function prepare to emit a conditional comparison within a sequence of
- conditional comparisons.  It returns a appropriate <code>CC</code> for passing to
- <code>gen_ccmp_next</code> or <code>cbranch_optab</code>.  The insns to prepare the
- compare are saved in <var>prep_seq</var> and the compare insns are saved in
- <var>gen_seq</var>.  They will be emitted when all the compares in the conditional
- comparision are generated without error.  The <var>prev</var> expression is the
- result of a prior call to <code>gen_ccmp_first</code> or <code>gen_ccmp_next</code>.  It
- may return <code>NULL</code> if the combination of <var>prev</var> and this comparison is
- not supported, otherwise the result must be appropriate for passing to
- <code>gen_ccmp_next</code> or <code>cbranch_optab</code>.  <var>code</var> is the
- <code>rtx_code</code> of the compare for <var>op0</var> and <var>op1</var>.  <var>bit_code</var>
- is <code>AND</code> or <code>IOR</code>, which is the op on the two compares.
+<dd><p>This function prepares to emit a conditional comparison within a sequence
+ of conditional comparisons.  It returns an appropriate comparison with
+ <code>CC</code> for passing to <code>gen_ccmp_next</code> or <code>cbranch_optab</code>.
+ The insns to prepare the compare are saved in <var>prep_seq</var> and the compare
+ insns are saved in <var>gen_seq</var>.  They will be emitted when all the
+ compares in the conditional comparision are generated without error.  The
+ <var>prev</var> expression is the result of a prior call to <code>gen_ccmp_first</code>
+ or <code>gen_ccmp_next</code>.  It may return <code>NULL</code> if the combination of
+ <var>prev</var> and this comparison is not supported, otherwise the result must
+ be appropriate for passing to <code>gen_ccmp_next</code> or <code>cbranch_optab</code>.
+ <var>code</var> is the <code>rtx_code</code> of the compare for <var>op0</var> and <var>op1</var>.
+ <var>bit_code</var> is <code>AND</code> or <code>IOR</code>, which is the op on the compares.
 </p></dd></dl>
 
 <dl>
@@ -1236,17 +1236,6 @@ default is to have no target-specific format overrides. If defined,
 <dd><p>If defined, this macro specifies the optional initialization
 routine for target specific customizations of the system printf
 and scanf formatter settings.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-TARGET_005fRELAXED_005fORDERING"></a>Target Hook: <em>bool</em> <strong>TARGET_RELAXED_ORDERING</strong></dt>
-<dd><p>If set to <code>true</code>, means that the target&rsquo;s memory model does not
-guarantee that loads which do not depend on one another will access
-main memory in the order of the instruction stream; if ordering is
-important, an explicit memory barrier must be used.  This is true of
-many recent processors which implement a policy of &ldquo;relaxed,&rdquo;
-&ldquo;weak,&rdquo; or &ldquo;release&rdquo; memory consistency, such as Alpha, PowerPC,
-and ia64.  The default is <code>false</code>.
 </p></dd></dl>
 
 <dl>

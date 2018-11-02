@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the BFD library.
 
-Copyright (C) 1991-2014 Free Software Foundation, Inc.
+Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -512,9 +512,79 @@ If passed a g++ v3 ABI mangled name, returns a buffer allocated
 with malloc holding the demangled name.  Returns NULL otherwise
 and on memory alloc failure.
 </p>
+<a name="index-bfd_005fupdate_005fcompression_005fheader"></a>
+<a name="bfd_005fupdate_005fcompression_005fheader"></a>
+<h4 class="subsubsection">2.3.1.22 <code>bfd_update_compression_header</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">void bfd_update_compression_header
+   (bfd *abfd, bfd_byte *contents, asection *sec);
+</pre></div>
+<p><strong>Description</strong><br>
+Set the compression header at CONTENTS of SEC in ABFD and update
+elf_section_flags for compression.
+</p>
+<a name="index-bfd_005fcheck_005fcompression_005fheader"></a>
+<a name="bfd_005fcheck_005fcompression_005fheader"></a>
+<h4 class="subsubsection">2.3.1.23 <code>bfd_check_compression_header</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">bfd_boolean bfd_check_compression_header
+   (bfd *abfd, bfd_byte *contents, asection *sec,
+    bfd_size_type *uncompressed_size);
+</pre></div>
+<p><strong>Description</strong><br>
+Check the compression header at CONTENTS of SEC in ABFD and
+store the uncompressed size in UNCOMPRESSED_SIZE if the
+compression header is valid.
+</p>
+<p><strong>Returns</strong><br>
+Return TRUE if the compression header is valid.
+</p>
+<a name="index-bfd_005fget_005fcompression_005fheader_005fsize"></a>
+<a name="bfd_005fget_005fcompression_005fheader_005fsize"></a>
+<h4 class="subsubsection">2.3.1.24 <code>bfd_get_compression_header_size</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">int bfd_get_compression_header_size (bfd *abfd, asection *sec);
+</pre></div>
+<p><strong>Description</strong><br>
+Return the size of the compression header of SEC in ABFD.
+</p>
+<p><strong>Returns</strong><br>
+Return the size of the compression header in bytes.
+</p>
+<a name="index-bfd_005fconvert_005fsection_005fsize"></a>
+<a name="bfd_005fconvert_005fsection_005fsize"></a>
+<h4 class="subsubsection">2.3.1.25 <code>bfd_convert_section_size</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">bfd_size_type bfd_convert_section_size
+   (bfd *ibfd, asection *isec, bfd *obfd, bfd_size_type size);
+</pre></div>
+<p><strong>Description</strong><br>
+Convert the size <var>size</var> of the section <var>isec</var> in input
+BFD <var>ibfd</var> to the section size in output BFD <var>obfd</var>.
+</p>
+<a name="index-bfd_005fconvert_005fsection_005fcontents"></a>
+<a name="bfd_005fconvert_005fsection_005fcontents"></a>
+<h4 class="subsubsection">2.3.1.26 <code>bfd_convert_section_contents</code></h4>
+<p><strong>Synopsis</strong>
+</p><div class="example">
+<pre class="example">bfd_boolean bfd_convert_section_contents
+   (bfd *ibfd, asection *isec, bfd *obfd,
+    bfd_byte **ptr, bfd_size_type *ptr_size);
+</pre></div>
+<p><strong>Description</strong><br>
+Convert the contents, stored in <var>*ptr</var>, of the section
+<var>isec</var> in input BFD <var>ibfd</var> to output BFD <var>obfd</var>
+if needed.  The original buffer pointed to by <var>*ptr</var> may
+be freed and <var>*ptr</var> is returned with memory malloc&rsquo;d by this
+function, and the new size written to <var>ptr_size</var>.
+</p>
 <a name="index-struct-bfd_005fiovec"></a>
 <a name="struct-bfd_005fiovec"></a>
-<h4 class="subsubsection">2.3.1.22 <code>struct bfd_iovec</code></h4>
+<h4 class="subsubsection">2.3.1.27 <code>struct bfd_iovec</code></h4>
 <p><strong>Description</strong><br>
 The <code>struct bfd_iovec</code> contains the internal file I/O class.
 Each <code>BFD</code> has an instance of this class and all file I/O is
@@ -556,7 +626,7 @@ extern const struct bfd_iovec _bfd_memory_iovec;
 
 <a name="index-bfd_005fget_005fmtime"></a>
 <a name="bfd_005fget_005fmtime"></a>
-<h4 class="subsubsection">2.3.1.23 <code>bfd_get_mtime</code></h4>
+<h4 class="subsubsection">2.3.1.28 <code>bfd_get_mtime</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">long bfd_get_mtime (bfd *abfd);
@@ -567,7 +637,7 @@ from the archive header for archive members).
 </p>
 <a name="index-bfd_005fget_005fsize"></a>
 <a name="bfd_005fget_005fsize"></a>
-<h4 class="subsubsection">2.3.1.24 <code>bfd_get_size</code></h4>
+<h4 class="subsubsection">2.3.1.29 <code>bfd_get_size</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">file_ptr bfd_get_size (bfd *abfd);
@@ -599,7 +669,7 @@ size reasonable?&quot;.
 </p>
 <a name="index-bfd_005fmmap"></a>
 <a name="bfd_005fmmap"></a>
-<h4 class="subsubsection">2.3.1.25 <code>bfd_mmap</code></h4>
+<h4 class="subsubsection">2.3.1.30 <code>bfd_mmap</code></h4>
 <p><strong>Synopsis</strong>
 </p><div class="example">
 <pre class="example">void *bfd_mmap (bfd *abfd, void *addr, bfd_size_type len,

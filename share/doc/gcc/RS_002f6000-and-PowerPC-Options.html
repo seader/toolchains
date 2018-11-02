@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Next: <a href="RX-Options.html#RX-Options" accesskey="n" rel="next">RX Options</
 </div>
 <hr>
 <a name="IBM-RS_002f6000-and-PowerPC-Options"></a>
-<h4 class="subsection">3.17.37 IBM RS/6000 and PowerPC Options</h4>
+<h4 class="subsection">3.18.38 IBM RS/6000 and PowerPC Options</h4>
 <a name="index-RS_002f6000-and-PowerPC-Options"></a>
 <a name="index-IBM-RS_002f6000-and-PowerPC-Options"></a>
 
@@ -166,7 +166,7 @@ and to treat GPRs as 64-bit, doubleword quantities.  GCC defaults to
 </p>
 </dd>
 <dt><code>-mcpu=<var>cpu_type</var></code></dt>
-<dd><a name="index-mcpu-8"></a>
+<dd><a name="index-mcpu-9"></a>
 <p>Set architecture type, register usage, and
 instruction scheduling parameters for machine type <var>cpu_type</var>.
 Supported values for <var>cpu_type</var> are &lsquo;<samp>401</samp>&rsquo;, &lsquo;<samp>403</samp>&rsquo;,
@@ -178,8 +178,9 @@ Supported values for <var>cpu_type</var> are &lsquo;<samp>401</samp>&rsquo;, &ls
 &lsquo;<samp>e300c3</samp>&rsquo;, &lsquo;<samp>e500mc</samp>&rsquo;, &lsquo;<samp>e500mc64</samp>&rsquo;, &lsquo;<samp>e5500</samp>&rsquo;,
 &lsquo;<samp>e6500</samp>&rsquo;, &lsquo;<samp>ec603e</samp>&rsquo;, &lsquo;<samp>G3</samp>&rsquo;, &lsquo;<samp>G4</samp>&rsquo;, &lsquo;<samp>G5</samp>&rsquo;,
 &lsquo;<samp>titan</samp>&rsquo;, &lsquo;<samp>power3</samp>&rsquo;, &lsquo;<samp>power4</samp>&rsquo;, &lsquo;<samp>power5</samp>&rsquo;, &lsquo;<samp>power5+</samp>&rsquo;,
-&lsquo;<samp>power6</samp>&rsquo;, &lsquo;<samp>power6x</samp>&rsquo;, &lsquo;<samp>power7</samp>&rsquo;, &lsquo;<samp>power8</samp>&rsquo;, &lsquo;<samp>powerpc</samp>&rsquo;,
-&lsquo;<samp>powerpc64</samp>&rsquo;, &lsquo;<samp>powerpc64le</samp>&rsquo;, and &lsquo;<samp>rs64</samp>&rsquo;.
+&lsquo;<samp>power6</samp>&rsquo;, &lsquo;<samp>power6x</samp>&rsquo;, &lsquo;<samp>power7</samp>&rsquo;, &lsquo;<samp>power8</samp>&rsquo;,
+&lsquo;<samp>power9</samp>&rsquo;, &lsquo;<samp>powerpc</samp>&rsquo;, &lsquo;<samp>powerpc64</samp>&rsquo;, &lsquo;<samp>powerpc64le</samp>&rsquo;,
+and &lsquo;<samp>rs64</samp>&rsquo;.
 </p>
 <p><samp>-mcpu=powerpc</samp>, <samp>-mcpu=powerpc64</samp>, and
 <samp>-mcpu=powerpc64le</samp> specify pure 32-bit PowerPC (either
@@ -200,7 +201,7 @@ following options:
 -mpowerpc-gpopt  -mpowerpc-gfxopt  -msingle-float -mdouble-float 
 -msimple-fpu -mstring  -mmulhw  -mdlmzb  -mmfpgpr -mvsx 
 -mcrypto -mdirect-move -mhtm -mpower8-fusion -mpower8-vector 
--mquad-memory -mquad-memory-atomic
+-mquad-memory -mquad-memory-atomic -mfloat128 -mfloat128-hardware
 </pre></div>
 
 <p>The particular options set for any particular CPU varies between
@@ -258,7 +259,7 @@ the AltiVec instruction set.  You may also need to set
 enhancements.
 </p>
 <p>When <samp>-maltivec</samp> is used, rather than <samp>-maltivec=le</samp> or
-<samp>-maltivec=be</samp>, the element order for Altivec intrinsics such
+<samp>-maltivec=be</samp>, the element order for AltiVec intrinsics such
 as <code>vec_splat</code>, <code>vec_extract</code>, and <code>vec_insert</code> 
 match array element order corresponding to the endianness of the
 target.  That is, element zero identifies the leftmost element in a
@@ -269,11 +270,11 @@ little-endian platform.
 </dd>
 <dt><code>-maltivec=be</code></dt>
 <dd><a name="index-maltivec_003dbe"></a>
-<p>Generate Altivec instructions using big-endian element order,
+<p>Generate AltiVec instructions using big-endian element order,
 regardless of whether the target is big- or little-endian.  This is
 the default when targeting a big-endian platform.
 </p>
-<p>The element order is used to interpret element numbers in Altivec
+<p>The element order is used to interpret element numbers in AltiVec
 intrinsics such as <code>vec_splat</code>, <code>vec_extract</code>, and
 <code>vec_insert</code>.  By default, these match array element order
 corresponding to the endianness for the target.
@@ -281,12 +282,12 @@ corresponding to the endianness for the target.
 </dd>
 <dt><code>-maltivec=le</code></dt>
 <dd><a name="index-maltivec_003dle"></a>
-<p>Generate Altivec instructions using little-endian element order,
+<p>Generate AltiVec instructions using little-endian element order,
 regardless of whether the target is big- or little-endian.  This is
 the default when targeting a little-endian platform.  This option is
 currently ignored when targeting a big-endian platform.
 </p>
-<p>The element order is used to interpret element numbers in Altivec
+<p>The element order is used to interpret element numbers in AltiVec
 intrinsics such as <code>vec_splat</code>, <code>vec_extract</code>, and
 <code>vec_insert</code>.  By default, these match array element order
 corresponding to the endianness for the target.
@@ -338,6 +339,13 @@ This is a PowerPC 32-bit SYSV ABI option.
 <dt><code>-misel=<var>yes/no</var></code></dt>
 <dd><p>This switch has been deprecated.  Use <samp>-misel</samp> and
 <samp>-mno-isel</samp> instead.
+</p>
+</dd>
+<dt><code>-mlra</code></dt>
+<dd><a name="index-mlra-2"></a>
+<p>Enable Local Register Allocation.  This is still experimental for PowerPC,
+so by default the compiler uses standard reload
+(i.e. <samp>-mno-lra</samp>).
 </p>
 </dd>
 <dt><code>-mspe</code></dt>
@@ -454,8 +462,8 @@ use any of the <samp>-mcpu=power7</samp>, <samp>-mcpu=power8</samp>, or
 instructions that target all 64 registers in the vector/scalar
 floating point register set that were added in version 2.07 of the
 PowerPC ISA.  <samp>-mupper-regs-sf</samp> is turned on by default if you
-use either of the <samp>-mcpu=power8</samp> or <samp>-mpower8-vector</samp>
-options.
+use either of the <samp>-mcpu=power8</samp>, <samp>-mpower8-vector</samp>, or
+<samp>-mcpu=power9</samp> options.
 </p>
 </dd>
 <dt><code>-mupper-regs</code></dt>
@@ -468,6 +476,40 @@ floating point register set, depending on the model of the machine.
 </p>
 <p>If the <samp>-mno-upper-regs</samp> option is used, it turns off both
 <samp>-mupper-regs-sf</samp> and <samp>-mupper-regs-df</samp> options.
+</p>
+</dd>
+<dt><code>-mfloat128</code></dt>
+<dt><code>-mno-float128</code></dt>
+<dd><a name="index-mfloat128"></a>
+<a name="index-mno_002dfloat128"></a>
+<p>Enable/disable the <var>__float128</var> keyword for IEEE 128-bit floating point
+and use either software emulation for IEEE 128-bit floating point or
+hardware instructions.
+</p>
+<p>The VSX instruction set (<samp>-mvsx</samp>, <samp>-mcpu=power7</samp>, or
+<samp>-mcpu=power8</samp>) must be enabled to use the <samp>-mfloat128</samp>
+option.  The <samp>-mfloat128</samp> option only works on PowerPC 64-bit
+Linux systems.
+</p>
+<p>If you use the ISA 3.0 instruction set (<samp>-mcpu=power9</samp>), the
+<samp>-mfloat128</samp> option will also enable the generation of ISA 3.0
+IEEE 128-bit floating point instructions.  Otherwise, IEEE 128-bit
+floating point will be done with software emulation.
+</p>
+</dd>
+<dt><code>-mfloat128-hardware</code></dt>
+<dt><code>-mno-float128-hardware</code></dt>
+<dd><a name="index-mfloat128_002dhardware"></a>
+<a name="index-mno_002dfloat128_002dhardware"></a>
+<p>Enable/disable using ISA 3.0 hardware instructions to support the
+<var>__float128</var> data type.
+</p>
+<p>If you use <samp>-mfloat128-hardware</samp>, it will enable the option
+<samp>-mfloat128</samp> as well.
+</p>
+<p>If you select ISA 3.0 instructions with <samp>-mcpu=power9</samp>, but do
+not use either <samp>-mfloat128</samp> or <samp>-mfloat128-hardware</samp>,
+the IEEE 128-bit floating point support will not be enabled.
 </p>
 </dd>
 <dt><code>-mfloat-gprs=<var>yes/single/double/no</var></code></dt>
@@ -618,7 +660,7 @@ floating-point unit.
 </p>
 </dd>
 <dt><code>-mfpu=<var>name</var></code></dt>
-<dd><a name="index-mfpu-2"></a>
+<dd><a name="index-mfpu-3"></a>
 <p>Specify type of floating-point unit.  Valid values for <var>name</var> are
 &lsquo;<samp>sp_lite</samp>&rsquo; (equivalent to <samp>-msingle-float -msimple-fpu</samp>),
 &lsquo;<samp>dp_lite</samp>&rsquo; (equivalent to <samp>-mdouble-float -msimple-fpu</samp>),
@@ -998,7 +1040,7 @@ set or clear the bit.
 </p>
 </dd>
 <dt><code>-msim</code></dt>
-<dd><a name="index-msim-7"></a>
+<dd><a name="index-msim-8"></a>
 <p>On embedded PowerPC systems, assume that the startup module is called
 <samp>sim-crt0.o</samp> and that the standard C libraries are <samp>libsim.a</samp> and
 <samp>libc.a</samp>.  This is the default for &lsquo;<samp>powerpc-*-eabisim</samp>&rsquo;
@@ -1106,6 +1148,14 @@ in the <code>.data</code> section, and all uninitialized data in the
 <code>.bss</code> section.
 </p>
 </dd>
+<dt><code>-mreadonly-in-sdata</code></dt>
+<dt><code>-mreadonly-in-sdata</code></dt>
+<dd><a name="index-mreadonly_002din_002dsdata"></a>
+<a name="index-mno_002dreadonly_002din_002dsdata"></a>
+<p>Put read-only objects in the <code>.sdata</code> section as well.  This is the
+default.
+</p>
+</dd>
 <dt><code>-mblock-move-inline-limit=<var>num</var></code></dt>
 <dd><a name="index-mblock_002dmove_002dinline_002dlimit"></a>
 <p>Inline all block moves (such as calls to <code>memcpy</code> or structure
@@ -1195,7 +1245,7 @@ Newton-Raphson steps to increase precision instead of doing a divide or
 square root and divide for floating-point arguments.  You should use
 the <samp>-ffast-math</samp> option when using <samp>-mrecip</samp> (or at
 least <samp>-funsafe-math-optimizations</samp>,
-<samp>-finite-math-only</samp>, <samp>-freciprocal-math</samp> and
+<samp>-ffinite-math-only</samp>, <samp>-freciprocal-math</samp> and
 <samp>-fno-trapping-math</samp>).  Note that while the throughput of the
 sequence is generally higher than the throughput of the non-reciprocal
 instruction, the precision of the sequence can be decreased by up to 2

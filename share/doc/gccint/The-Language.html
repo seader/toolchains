@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -118,8 +118,8 @@ be a valid GIMPLE operand (so you cannot generate expressions in C code).
 <div class="smallexample">
 <pre class="smallexample">(simplify
   (trunc_mod integer_zerop@0 @1)
-  (if (!integer_zerop (@1)))
-  @0)
+  (if (!integer_zerop (@1))
+   @0))
 </pre></div>
 
 <p>Here <code>@0</code> captures the first operand of the trunc_mod expression
@@ -130,9 +130,11 @@ can be unconstrained or capture expresions or predicates.
 <p>This example introduces an optional operand of simplify,
 the if-expression.  This condition is evaluated after the
 expression matched in the IL and is required to evaluate to true
-to enable the replacement expression.  The expression operand
-of the <code>if</code> is a standard C expression which may contain references
-to captures.
+to enable the replacement expression in the second operand
+position.  The expression operand of the <code>if</code> is a standard C
+expression which may contain references to captures.  The <code>if</code>
+has an optional third operand which may contain the replacement
+expression that is enabled when the condition evaluates to false.
 </p>
 <p>A <code>if</code> expression can be used to specify a common condition
 for multiple simplify patterns, avoiding the need
@@ -149,7 +151,47 @@ to repeat that multiple times:
     (negate @1)))
 </pre></div>
 
+<p>Note that <code>if</code>s in outer position do not have the optional
+else clause but instead have multiple then clauses.
+</p>
 <p>Ifs can be nested.
+</p>
+<p>There exists a <code>switch</code> expression which can be used to
+chain conditions avoiding nesting <code>if</code>s too much:
+</p>
+<div class="smallexample">
+<pre class="smallexample">(simplify
+ (simple_comparison @0 REAL_CST@1)
+ (switch
+  /* a CMP (-0) -&gt; a CMP 0  */
+  (if (REAL_VALUE_MINUS_ZERO (TREE_REAL_CST (@1)))
+   (cmp @0 { build_real (TREE_TYPE (@1), dconst0); }))
+  /* x != NaN is always true, other ops are always false.  */
+  (if (REAL_VALUE_ISNAN (TREE_REAL_CST (@1))
+       &amp;&amp; ! HONOR_SNANS (@1))
+   { constant_boolean_node (cmp == NE_EXPR, type); })))
+</pre></div>
+
+<p>Is equal to
+</p>
+<div class="smallexample">
+<pre class="smallexample">(simplify
+ (simple_comparison @0 REAL_CST@1)
+ (switch
+  /* a CMP (-0) -&gt; a CMP 0  */
+  (if (REAL_VALUE_MINUS_ZERO (TREE_REAL_CST (@1)))
+   (cmp @0 { build_real (TREE_TYPE (@1), dconst0); })
+   /* x != NaN is always true, other ops are always false.  */
+   (if (REAL_VALUE_ISNAN (TREE_REAL_CST (@1))
+        &amp;&amp; ! HONOR_SNANS (@1))
+    { constant_boolean_node (cmp == NE_EXPR, type); }))))
+</pre></div>
+
+<p>which has the second <code>if</code> in the else operand of the first.
+The <code>switch</code> expression takes <code>if</code> expressions as
+operands (which may not have else clauses) and as a last operand
+a replacement expression which should be enabled by default if
+no other condition evaluated to true.
 </p>
 <p>Captures can also be used for capturing results of sub-expressions.
 </p>
@@ -186,19 +228,35 @@ preprocessor directives.
   (bit_and @1 @0))
 </pre></div>
 
-<p>Here we introduce flags on match expressions.  There is currently
-a single flag, <code>c</code>, which denotes that the expression should
+<p>Here we introduce flags on match expressions.  The flag used
+above, <code>c</code>, denotes that the expression should
 be also matched commutated.  Thus the above match expression
 is really the following four match expressions:
 </p>
-<p>(bit_and integral_op_p@0 (bit_ior (bit_not @0) @1))
+<div class="smallexample">
+<pre class="smallexample">  (bit_and integral_op_p@0 (bit_ior (bit_not @0) @1))
   (bit_and (bit_ior (bit_not @0) @1) integral_op_p@0)
   (bit_and integral_op_p@0 (bit_ior @1 (bit_not @0)))
   (bit_and (bit_ior @1 (bit_not @0)) integral_op_p@0)
-</p>
+</pre></div>
+
 <p>Usual canonicalizations you know from GENERIC expressions are
 applied before matching, so for example constant operands always
 come second in commutative expressions.
+</p>
+<p>The second supported flag is <code>s</code> which tells the code
+generator to fail the pattern if the expression marked with
+<code>s</code> does have more than one use.  For example in
+</p>
+<div class="smallexample">
+<pre class="smallexample">(simplify
+  (pointer_plus (pointer_plus:s @0 @1) @3)
+  (pointer_plus @0 (plus @1 @3)))
+</pre></div>
+
+<p>this avoids the association if <code>(pointer_plus @0 @1)</code> is
+used outside of the matched expression and thus it would stay
+live and not trivially removed by dead code elimination.
 </p>
 <p>More features exist to avoid too much repetition.
 </p>
@@ -265,6 +323,11 @@ be added to a new <code>for</code>.  For example
   (POW (abs @0) (mult @1 { built_real (TREE_TYPE (@1), dconsthalf); }))))
 </pre></div>
 
+<p><code>for</code>s and operator lists can include the special identifier
+<code>null</code> that matches nothing and can never be generated.  This can
+be used to pad an operator list so that it has a standard form,
+even if there isn&rsquo;t a suitable operator for every form.
+</p>
 <p>Another building block are <code>with</code> expressions in the
 result expression which nest the generated code in a new C block
 followed by its argument:

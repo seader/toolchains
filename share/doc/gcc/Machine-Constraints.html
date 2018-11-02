@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Previous: <a href="Modifiers.html#Modifiers" accesskey="p" rel="prev">Modifiers<
 </div>
 <hr>
 <a name="Constraints-for-Particular-Machines"></a>
-<h4 class="subsubsection">6.43.3.4 Constraints for Particular Machines</h4>
+<h4 class="subsubsection">6.44.3.4 Constraints for Particular Machines</h4>
 <a name="index-machine-specific-constraints"></a>
 <a name="index-constraints_002c-machine-specific"></a>
 
@@ -799,6 +799,63 @@ range of -2048 to -1
 <dt><code>P</code></dt>
 <dd><p>12-bit signed integer constant that is greater than zero&mdash;i.e. in the
 range of 1 to 2047.
+</p>
+</dd>
+</dl>
+
+</dd>
+<dt><em>FT32&mdash;<samp>config/ft32/constraints.md</samp></em></dt>
+<dd><dl compact="compact">
+<dt><code>A</code></dt>
+<dd><p>An absolute address
+</p>
+</dd>
+<dt><code>B</code></dt>
+<dd><p>An offset address
+</p>
+</dd>
+<dt><code>W</code></dt>
+<dd><p>A register indirect memory operand
+</p>
+</dd>
+<dt><code>e</code></dt>
+<dd><p>An offset address.
+</p>
+</dd>
+<dt><code>f</code></dt>
+<dd><p>An offset address.
+</p>
+</dd>
+<dt><code>O</code></dt>
+<dd><p>The constant zero or one
+</p>
+</dd>
+<dt><code>I</code></dt>
+<dd><p>A 16-bit signed constant (-32768 &hellip; 32767)
+</p>
+</dd>
+<dt><code>w</code></dt>
+<dd><p>A bitfield mask suitable for bext or bins
+</p>
+</dd>
+<dt><code>x</code></dt>
+<dd><p>An inverted bitfield mask suitable for bext or bins
+</p>
+</dd>
+<dt><code>L</code></dt>
+<dd><p>A 16-bit unsigned constant, multiple of 4 (0 &hellip; 65532)
+</p>
+</dd>
+<dt><code>S</code></dt>
+<dd><p>A 20-bit signed constant (-524288 &hellip; 524287)
+</p>
+</dd>
+<dt><code>b</code></dt>
+<dd><p>A constant for a bitfield width (1 &hellip; 16)
+</p>
+</dd>
+<dt><code>KA</code></dt>
+<dd><p>A 10-bit signed constant (-512 &hellip; 511)
 </p>
 </dd>
 </dl>
@@ -1732,10 +1789,29 @@ instead of <code>0</code> in the assembly output.
 a custom instruction opcode. Range 0 to 255.
 </p>
 </dd>
+<dt><code>P</code></dt>
+<dd><p>An immediate operand for R2 andchi/andci instructions. 
+</p>
+</dd>
 <dt><code>S</code></dt>
 <dd><p>Matches immediates which are addresses in the small
 data section and therefore can be added to <code>gp</code>
 as a 16-bit immediate to re-create their 32-bit value.
+</p>
+</dd>
+<dt><code>U</code></dt>
+<dd><p>Matches constants suitable as an operand for the rdprs and
+cache instructions.
+</p>
+</dd>
+<dt><code>v</code></dt>
+<dd><p>A memory operand suitable for Nios II R2 load/store
+exclusive instructions.
+</p>
+</dd>
+<dt><code>w</code></dt>
+<dd><p>A memory operand suitable for load/store IO and cache
+instructions.
 </p>
 
 </dd>
@@ -1828,12 +1904,13 @@ offset) after the opcode.
 </p>
 <p>When using any of the register constraints (<code>wa</code>, <code>wd</code>,
 <code>wf</code>, <code>wg</code>, <code>wh</code>, <code>wi</code>, <code>wj</code>, <code>wk</code>,
-<code>wl</code>, <code>wm</code>, <code>ws</code>, <code>wt</code>, <code>wu</code>, <code>wv</code>,
-<code>ww</code>, or <code>wy</code>) that take VSX registers, you must use
-<code>%x&lt;n&gt;</code> in the template so that the correct register is used.
-Otherwise the register number output in the assembly file will be
-incorrect if an Altivec register is an operand of a VSX instruction
-that expects VSX register numbering.
+<code>wl</code>, <code>wm</code>, <code>wo</code>, <code>wp</code>, <code>wq</code>, <code>ws</code>,
+<code>wt</code>, <code>wu</code>, <code>wv</code>, <code>ww</code>, or <code>wy</code>)
+that take VSX registers, you must use <code>%x&lt;n&gt;</code> in the template so
+that the correct register is used.  Otherwise the register number
+output in the assembly file will be incorrect if an Altivec register
+is an operand of a VSX instruction that expects VSX register
+numbering.
 </p>
 <div class="smallexample">
 <pre class="smallexample">asm (&quot;xvadddp %x0,%x1,%x2&quot; : &quot;=wa&quot; (v1) : &quot;wa&quot; (v2), &quot;wa&quot; (v3));
@@ -1847,9 +1924,34 @@ that expects VSX register numbering.
 
 <p>is not correct.
 </p>
+<p>If an instruction only takes Altivec registers, you do not want to use
+<code>%x&lt;n&gt;</code>.
+</p>
+<div class="smallexample">
+<pre class="smallexample">asm (&quot;xsaddqp %0,%1,%2&quot; : &quot;=v&quot; (v1) : &quot;v&quot; (v2), &quot;v&quot; (v3));
+</pre></div>
+
+<p>is correct because the <code>xsaddqp</code> instruction only takes Altivec
+registers, while:
+</p>
+<div class="smallexample">
+<pre class="smallexample">asm (&quot;xsaddqp %x0,%x1,%x2&quot; : &quot;=v&quot; (v1) : &quot;v&quot; (v2), &quot;v&quot; (v3));
+</pre></div>
+
+<p>is incorrect.
+</p>
+</dd>
+<dt><code>wb</code></dt>
+<dd><p>Altivec register if <samp>-mcpu=power9</samp> is used or NO_REGS.
+</p>
 </dd>
 <dt><code>wd</code></dt>
 <dd><p>VSX vector register to hold vector double data or NO_REGS.
+</p>
+</dd>
+<dt><code>we</code></dt>
+<dd><p>VSX register if the <samp>-mcpu=power9</samp> and <samp>-m64</samp> options
+were used or NO_REGS.
 </p>
 </dd>
 <dt><code>wf</code></dt>
@@ -1888,6 +1990,18 @@ that expects VSX register numbering.
 <dd><p>No register (NO_REGS).
 </p>
 </dd>
+<dt><code>wo</code></dt>
+<dd><p>VSX register to use for ISA 3.0 vector instructions, or NO_REGS.
+</p>
+</dd>
+<dt><code>wp</code></dt>
+<dd><p>VSX register to use for IEEE 128-bit floating point TFmode, or NO_REGS.
+</p>
+</dd>
+<dt><code>wq</code></dt>
+<dd><p>VSX register to use for IEEE 128-bit floating point, or NO_REGS.
+</p>
+</dd>
 <dt><code>wr</code></dt>
 <dd><p>General purpose register if 64-bit instructions are enabled or NO_REGS.
 </p>
@@ -1924,8 +2038,37 @@ that expects VSX register numbering.
 <dd><p>Floating point register if the LFIWZX instruction is enabled or NO_REGS.
 </p>
 </dd>
+<dt><code>wA</code></dt>
+<dd><p>Address base register if 64-bit instructions are enabled or NO_REGS.
+</p>
+</dd>
 <dt><code>wD</code></dt>
 <dd><p>Int constant that is the element number of the 64-bit scalar in a vector.
+</p>
+</dd>
+<dt><code>wE</code></dt>
+<dd><p>Vector constant that can be loaded with the XXSPLTIB instruction.
+</p>
+</dd>
+<dt><code>wF</code></dt>
+<dd><p>Memory operand suitable for power9 fusion load/stores.
+</p>
+</dd>
+<dt><code>wG</code></dt>
+<dd><p>Memory operand suitable for TOC fusion memory references.
+</p>
+</dd>
+<dt><code>wL</code></dt>
+<dd><p>Int constant that is the element number that the MFVSRLD instruction.
+targets.
+</p>
+</dd>
+<dt><code>wM</code></dt>
+<dd><p>Match vector constant with all 1&rsquo;s if the XXLORC instruction is available.
+</p>
+</dd>
+<dt><code>wO</code></dt>
+<dd><p>A memory operand suitable for the ISA 3.0 vector d-form instructions.
 </p>
 </dd>
 <dt><code>wQ</code></dt>
@@ -1933,12 +2076,12 @@ that expects VSX register numbering.
 instructions.
 </p>
 </dd>
-<dt><code>h</code></dt>
-<dd><p>&lsquo;<samp>MQ</samp>&rsquo;, &lsquo;<samp>CTR</samp>&rsquo;, or &lsquo;<samp>LINK</samp>&rsquo; register
+<dt><code>wS</code></dt>
+<dd><p>Vector constant that can be loaded with XXSPLTIB &amp; sign extension.
 </p>
 </dd>
-<dt><code>q</code></dt>
-<dd><p>&lsquo;<samp>MQ</samp>&rsquo; register
+<dt><code>h</code></dt>
+<dd><p>&lsquo;<samp>MQ</samp>&rsquo;, &lsquo;<samp>CTR</samp>&rsquo;, or &lsquo;<samp>LINK</samp>&rsquo; register
 </p>
 </dd>
 <dt><code>c</code></dt>
@@ -2054,20 +2197,8 @@ usually better to use &lsquo;<samp>m</samp>&rsquo; or &lsquo;<samp>es</samp>&rsq
 preferable for <code>asm</code> statements)
 </p>
 </dd>
-<dt><code>S</code></dt>
-<dd><p>Constant suitable as a 64-bit mask operand
-</p>
-</dd>
-<dt><code>T</code></dt>
-<dd><p>Constant suitable as a 32-bit mask operand
-</p>
-</dd>
 <dt><code>U</code></dt>
 <dd><p>System V Release 4 small data area reference
-</p>
-</dd>
-<dt><code>t</code></dt>
-<dd><p>AND masks that can be performed by two rldic{l, r} instructions
 </p>
 </dd>
 <dt><code>W</code></dt>

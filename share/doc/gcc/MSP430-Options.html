@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Next: <a href="NDS32-Options.html#NDS32-Options" accesskey="n" rel="next">NDS32 
 </div>
 <hr>
 <a name="MSP430-Options-1"></a>
-<h4 class="subsection">3.17.29 MSP430 Options</h4>
+<h4 class="subsection">3.18.30 MSP430 Options</h4>
 <a name="index-MSP430-Options"></a>
 
 <p>These options are defined for the MSP430:
@@ -111,6 +111,17 @@ cause the linker to search for a script called <samp>xxx.ld</samp>.
 <p>This option is also passed on to the assembler.
 </p>
 </dd>
+<dt><code>-mwarn-mcu</code></dt>
+<dt><code>-mno-warn-mcu</code></dt>
+<dd><a name="index-mwarn_002dmcu"></a>
+<a name="index-mno_002dwarn_002dmcu"></a>
+<p>This option enables or disables warnings about conflicts between the
+MCU name specified by the <samp>-mmcu</samp> option and the ISA set by the
+<samp>-mcpu</samp> option and/or the hardware multiply support set by the
+<samp>-mhwmult</samp> option.  It also toggles warnings about unrecognized
+MCU names.  This option is on by default.
+</p>
+</dd>
 <dt><code>-mcpu=</code></dt>
 <dd><a name="index-mcpu_003d-3"></a>
 <p>Specifies the ISA to use.  Accepted values are &lsquo;<samp>msp430</samp>&rsquo;,
@@ -119,7 +130,7 @@ cause the linker to search for a script called <samp>xxx.ld</samp>.
 </p>
 </dd>
 <dt><code>-msim</code></dt>
-<dd><a name="index-msim-5"></a>
+<dd><a name="index-msim-6"></a>
 <p>Link to the simulator runtime libraries and linker script.  Overrides
 any scripts that would be selected by the <samp>-mmcu=</samp> option.
 </p>
@@ -150,9 +161,9 @@ for the original 16-bit-only multiply supported by early MCUs.
 &lsquo;<samp>f5series</samp>&rsquo; for the 16/32-bit multiply supported by F5-series MCUs.
 A value of &lsquo;<samp>auto</samp>&rsquo; can also be given.  This tells GCC to deduce
 the hardware multiply support based upon the MCU name provided by the
-<samp>-mmcu</samp> option.  If no <samp>-mmcu</samp> option is specified then
-&lsquo;<samp>32bit</samp>&rsquo; hardware multiply support is assumed.  &lsquo;<samp>auto</samp>&rsquo; is the
-default setting.
+<samp>-mmcu</samp> option.  If no <samp>-mmcu</samp> option is specified or if
+the MCU name is not recognized then no hardware multiply support is
+assumed.  <code>auto</code> is the default setting.
 </p>
 <p>Hardware multiplies are normally performed by calling a library
 routine.  This saves space in the generated code.  When compiling at
@@ -170,6 +181,32 @@ them safe to use inside interrupt handlers as well as in normal code.
 initializers or constructors.  This is intended for memory-constrained
 devices.  The compiler includes special symbols in some objects
 that tell the linker and runtime which code fragments are required.
+</p>
+</dd>
+<dt><code>-mcode-region=</code></dt>
+<dt><code>-mdata-region=</code></dt>
+<dd><a name="index-mcode_002dregion"></a>
+<a name="index-mdata_002dregion"></a>
+<p>These options tell the compiler where to place functions and data that
+do not have one of the <code>lower</code>, <code>upper</code>, <code>either</code> or
+<code>section</code> attributes.  Possible values are <code>lower</code>,
+<code>upper</code>, <code>either</code> or <code>any</code>.  The first three behave
+like the corresponding attribute.  The fourth possible value -
+<code>any</code> - is the default.  It leaves placement entirely up to the
+linker script and how it assigns the standard sections
+(<code>.text</code>, <code>.data</code>, etc) to the memory regions.
+</p>
+</dd>
+<dt><code>-msilicon-errata=</code></dt>
+<dd><a name="index-msilicon_002derrata"></a>
+<p>This option passes on a request to assembler to enable the fixes for
+the named silicon errata.
+</p>
+</dd>
+<dt><code>-msilicon-errata-warn=</code></dt>
+<dd><a name="index-msilicon_002derrata_002dwarn"></a>
+<p>This option passes on a request to the assembler to enable warning
+messages when a silicon errata might need to be applied.
 </p>
 </dd>
 </dl>

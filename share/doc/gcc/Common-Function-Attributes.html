@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -589,30 +589,41 @@ refer to the following subsections for details.
 </dd>
 <dt><code>leaf</code></dt>
 <dd><a name="index-leaf-function-attribute"></a>
-<p>Calls to external functions with this attribute must return to the current
-compilation unit only by return or by exception handling.  In particular, leaf
-functions are not allowed to call callback function passed to it from the current
-compilation unit or directly call functions exported by the unit or longjmp
-into the unit.  Leaf function might still call functions from other compilation
-units and thus they are not necessarily leaf in the sense that they contain no
-function calls at all.
+<p>Calls to external functions with this attribute must return to the
+current compilation unit only by return or by exception handling.  In
+particular, a leaf function is not allowed to invoke callback functions
+passed to it from the current compilation unit, directly call functions
+exported by the unit, or <code>longjmp</code> into the unit.  Leaf functions
+might still call functions from other compilation units and thus they
+are not necessarily leaf in the sense that they contain no function
+calls at all.
 </p>
-<p>The attribute is intended for library functions to improve dataflow analysis.
-The compiler takes the hint that any data not escaping the current compilation unit can
-not be used or modified by the leaf function.  For example, the <code>sin</code> function
-is a leaf function, but <code>qsort</code> is not.
+<p>The attribute is intended for library functions to improve dataflow
+analysis.  The compiler takes the hint that any data not escaping the
+current compilation unit cannot be used or modified by the leaf
+function.  For example, the <code>sin</code> function is a leaf function, but
+<code>qsort</code> is not.
 </p>
-<p>Note that leaf functions might invoke signals and signal handlers might be
-defined in the current compilation unit and use static variables.  The only
-compliant way to write such a signal handler is to declare such variables
-<code>volatile</code>.
+<p>Note that leaf functions might indirectly run a signal handler defined
+in the current compilation unit that uses static variables.  Similarly,
+when lazy symbol resolution is in effect, leaf functions might invoke
+indirect functions whose resolver function or implementation function is
+defined in the current compilation unit and uses static variables.  There
+is no standard-compliant way to write such a signal handler, resolver
+function, or implementation function, and the best that you can do is to
+remove the <code>leaf</code> attribute or mark all such static variables
+<code>volatile</code>.  Lastly, for ELF-based systems that support symbol
+interposition, care should be taken that functions defined in the
+current compilation unit do not unexpectedly interpose other symbols
+based on the defined standards mode and defined feature test macros;
+otherwise an inadvertent callback would be added.
 </p>
-<p>The attribute has no effect on functions defined within the current compilation
-unit.  This is to allow easy merging of multiple compilation units into one,
-for example, by using the link-time optimization.  For this reason the
-attribute is not allowed on types to annotate indirect calls.
+<p>The attribute has no effect on functions defined within the current
+compilation unit.  This is to allow easy merging of multiple compilation
+units into one, for example, by using the link-time optimization.  For
+this reason the attribute is not allowed on types to annotate indirect
+calls.
 </p>
-
 </dd>
 <dt><code>malloc</code></dt>
 <dd><a name="index-malloc-function-attribute"></a>
@@ -688,6 +699,13 @@ prologue which decides whether to split the stack.  Functions with the
 may run with only a small amount of stack space available.
 </p>
 </dd>
+<dt><code>no_stack_limit</code></dt>
+<dd><a name="index-no_005fstack_005flimit-function-attribute"></a>
+<p>This attribute locally overrides the <samp>-fstack-limit-register</samp>
+and <samp>-fstack-limit-symbol</samp> command-line options; it has the effect
+of disabling stack limit checking in the function it applies to.
+</p>
+</dd>
 <dt><code>noclone</code></dt>
 <dd><a name="index-noclone-function-attribute"></a>
 <p>This function attribute prevents a function from being considered for
@@ -742,6 +760,35 @@ my_memcpy (void *dest, const void *src, size_t len)
 </pre></div>
 
 </dd>
+<dt><code>noplt</code></dt>
+<dd><a name="index-noplt-function-attribute"></a>
+<p>The <code>noplt</code> attribute is the counterpart to option <samp>-fno-plt</samp>.
+Calls to functions marked with this attribute in position-independent code
+do not use the PLT.
+</p>
+<div class="smallexample">
+<pre class="smallexample">/* Externally defined function foo.  */
+int foo () __attribute__ ((noplt));
+
+int
+main (/* <span class="roman">&hellip;</span> */)
+{
+  /* <span class="roman">&hellip;</span> */
+  foo ();
+  /* <span class="roman">&hellip;</span> */
+}
+</pre></div>
+
+<p>The <code>noplt</code> attribute on function <code>foo</code>
+tells the compiler to assume that
+the function <code>foo</code> is externally defined and that the call to
+<code>foo</code> must avoid the PLT
+in position-independent code.
+</p>
+<p>In position-dependent code, a few targets also convert calls to
+functions that are marked to not use the PLT to use the GOT instead.
+</p>
+</dd>
 <dt><code>noreturn</code></dt>
 <dd><a name="index-noreturn-function-attribute"></a>
 <a name="index-functions-that-never-return"></a>
@@ -787,34 +834,6 @@ with the notable exceptions of <code>qsort</code> and <code>bsearch</code> that
 take function pointer arguments.
 </p>
 </dd>
-<dt><code>noplt</code></dt>
-<dd><a name="index-noplt-function-attribute"></a>
-<p>The <code>noplt</code> attribute is the counterpart to option <samp>-fno-plt</samp> and
-does not use PLT for calls to functions marked with this attribute in position
-independent code. 
-</p>
-<div class="smallexample">
-<pre class="smallexample">/* Externally defined function foo.  */
-int foo () __attribute__ ((noplt));
-
-int
-main (/* <span class="roman">&hellip;</span> */)
-{
-  /* <span class="roman">&hellip;</span> */
-  foo ();
-  /* <span class="roman">&hellip;</span> */
-}
-</pre></div>
-
-<p>The <code>noplt</code> attribute on function foo tells the compiler to assume that
-the function foo is externally defined and the call to foo must avoid the PLT
-in position independent code.
-</p>
-<p>Additionally, a few targets also convert calls to those functions that are
-marked to not use the PLT to use the GOT instead for non-position independent
-code.
-</p>
-</dd>
 <dt><code>optimize</code></dt>
 <dd><a name="index-optimize-function-attribute"></a>
 <p>The <code>optimize</code> attribute is used to specify that a function is to
@@ -851,7 +870,7 @@ with the attribute <code>pure</code>.  For example,
 <p>says that the hypothetical function <code>square</code> is safe to call
 fewer times than the program says.
 </p>
-<p>Some of common examples of pure functions are <code>strlen</code> or <code>memcmp</code>.
+<p>Some common examples of pure functions are <code>strlen</code> or <code>memcmp</code>.
 Interesting non-pure functions are functions with infinite loops or those
 depending on volatile memory or other system resource, that may change between
 two consecutive calls (such as <code>feof</code> in a multithreading environment).
@@ -932,11 +951,36 @@ with a copy that redefines NULL appropriately.
 <samp>-Wformat</samp>.
 </p>
 </dd>
+<dt><code>simd</code></dt>
+<dt><code>simd(&quot;<var>mask</var>&quot;)</code></dt>
+<dd><a name="index-simd-function-attribute"></a>
+<p>This attribute enables creation of one or more function versions that
+can process multiple arguments using SIMD instructions from a
+single invocation.  Specifying this attribute allows compiler to
+assume that such versions are available at link time (provided
+in the same or another translation unit).  Generated versions are
+target-dependent and described in the corresponding Vector ABI document.  For
+x86_64 target this document can be found
+<a href="https://sourceware.org/glibc/wiki/libmvec?action=AttachFile&amp;do=view&amp;target=VectorABI.txt">here</a><!-- /@w -->.
+</p>
+<p>The optional argument <var>mask</var> may have the value
+<code>notinbranch</code> or <code>inbranch</code>,
+and instructs the compiler to generate non-masked or masked
+clones correspondingly. By default, all clones are generated.
+</p>
+<p>The attribute should not be used together with Cilk Plus <code>vector</code>
+attribute on the same function.
+</p>
+<p>If the attribute is specified and <code>#pragma omp declare simd</code> is
+present on a declaration and the <samp>-fopenmp</samp> or <samp>-fopenmp-simd</samp>
+switch is specified, then the attribute is ignored.
+</p>
+</dd>
 <dt><code>stack_protect</code></dt>
 <dd><a name="index-stack_005fprotect-function-attribute"></a>
-<p>This function attribute make a stack protection of the function if 
-flags <samp>fstack-protector</samp> or <samp>fstack-protector-strong</samp>
-or <samp>fstack-protector-explicit</samp> are set.
+<p>This attribute adds stack protection code to the function if 
+flags <samp>-fstack-protector</samp>, <samp>-fstack-protector-strong</samp>
+or <samp>-fstack-protector-explicit</samp> are set.
 </p>
 </dd>
 <dt><code>target (<var>options</var>)</code></dt>
@@ -976,6 +1020,20 @@ or separate the options with a comma (&lsquo;<samp>,</samp>&rsquo;) within a sin
 for details.
 </p>
 </dd>
+<dt><code>target_clones (<var>options</var>)</code></dt>
+<dd><a name="index-target_005fclones-function-attribute"></a>
+<p>The <code>target_clones</code> attribute is used to specify that a function
+be cloned into multiple versions compiled with different target options
+than specified on the command line.  The supported options and restrictions
+are the same as for <code>target</code> attribute.
+</p>
+<p>For instance, on an x86, you could compile a function with
+<code>target_clones(&quot;sse4.1,avx&quot;)</code>.  GCC creates two function clones,
+one compiled with <samp>-msse4.1</samp> and another with <samp>-mavx</samp>.
+It also creates a resolver function (see the <code>ifunc</code> attribute
+above) that dynamically selects a clone suitable for current architecture.
+</p>
+</dd>
 <dt><code>unused</code></dt>
 <dd><a name="index-unused-function-attribute"></a>
 <p>This attribute, attached to a function, means that the function is meant
@@ -998,7 +1056,10 @@ class itself is instantiated.
 <dt><code>visibility (&quot;<var>visibility_type</var>&quot;)</code></dt>
 <dd><a name="index-visibility-function-attribute"></a>
 <p>This attribute affects the linkage of the declaration to which it is attached.
-There are four supported <var>visibility_type</var> values: default,
+It can be applied to variables (see <a href="Common-Variable-Attributes.html#Common-Variable-Attributes">Common Variable Attributes</a>) and types
+(see <a href="Common-Type-Attributes.html#Common-Type-Attributes">Common Type Attributes</a>) as well as functions.
+</p>
+<p>There are four supported <var>visibility_type</var> values: default,
 hidden, protected or internal visibility.
 </p>
 <div class="smallexample">
@@ -1166,6 +1227,7 @@ performing a reloadable link on them.
 <p>At present, a declaration to which <code>weakref</code> is attached can
 only be <code>static</code>.
 </p>
+
 </dd>
 </dl>
 

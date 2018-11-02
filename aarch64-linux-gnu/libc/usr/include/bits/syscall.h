@@ -28,6 +28,7 @@
 #define SYS_clone __NR_clone
 #define SYS_close __NR_close
 #define SYS_connect __NR_connect
+#define SYS_copy_file_range __NR_copy_file_range
 #define SYS_delete_module __NR_delete_module
 #define SYS_dup __NR_dup
 #define SYS_dup3 __NR_dup3
@@ -116,12 +117,14 @@
 #define SYS_lsetxattr __NR_lsetxattr
 #define SYS_madvise __NR_madvise
 #define SYS_mbind __NR_mbind
+#define SYS_membarrier __NR_membarrier
 #define SYS_memfd_create __NR_memfd_create
 #define SYS_migrate_pages __NR_migrate_pages
 #define SYS_mincore __NR_mincore
 #define SYS_mkdirat __NR_mkdirat
 #define SYS_mknodat __NR_mknodat
 #define SYS_mlock __NR_mlock
+#define SYS_mlock2 __NR_mlock2
 #define SYS_mlockall __NR_mlockall
 #define SYS_mmap __NR_mmap
 #define SYS_mount __NR_mount
@@ -156,6 +159,7 @@
 #define SYS_prctl __NR_prctl
 #define SYS_pread64 __NR_pread64
 #define SYS_preadv __NR_preadv
+#define SYS_preadv2 __NR_preadv2
 #define SYS_prlimit64 __NR_prlimit64
 #define SYS_process_vm_readv __NR_process_vm_readv
 #define SYS_process_vm_writev __NR_process_vm_writev
@@ -163,6 +167,7 @@
 #define SYS_ptrace __NR_ptrace
 #define SYS_pwrite64 __NR_pwrite64
 #define SYS_pwritev __NR_pwritev
+#define SYS_pwritev2 __NR_pwritev2
 #define SYS_quotactl __NR_quotactl
 #define SYS_read __NR_read
 #define SYS_readahead __NR_readahead
@@ -268,6 +273,7 @@
 #define SYS_uname __NR_uname
 #define SYS_unlinkat __NR_unlinkat
 #define SYS_unshare __NR_unshare
+#define SYS_userfaultfd __NR_userfaultfd
 #define SYS_utimensat __NR_utimensat
 #define SYS_vhangup __NR_vhangup
 #define SYS_vmsplice __NR_vmsplice
@@ -298,6 +304,7 @@
 #define SYS_clone __NR_clone
 #define SYS_close __NR_close
 #define SYS_connect __NR_connect
+#define SYS_copy_file_range __NR_copy_file_range
 #define SYS_delete_module __NR_delete_module
 #define SYS_dup __NR_dup
 #define SYS_dup3 __NR_dup3
@@ -386,12 +393,14 @@
 #define SYS_lsetxattr __NR_lsetxattr
 #define SYS_madvise __NR_madvise
 #define SYS_mbind __NR_mbind
+#define SYS_membarrier __NR_membarrier
 #define SYS_memfd_create __NR_memfd_create
 #define SYS_migrate_pages __NR_migrate_pages
 #define SYS_mincore __NR_mincore
 #define SYS_mkdirat __NR_mkdirat
 #define SYS_mknodat __NR_mknodat
 #define SYS_mlock __NR_mlock
+#define SYS_mlock2 __NR_mlock2
 #define SYS_mlockall __NR_mlockall
 #define SYS_mmap __NR_mmap
 #define SYS_mount __NR_mount
@@ -426,6 +435,7 @@
 #define SYS_prctl __NR_prctl
 #define SYS_pread64 __NR_pread64
 #define SYS_preadv __NR_preadv
+#define SYS_preadv2 __NR_preadv2
 #define SYS_prlimit64 __NR_prlimit64
 #define SYS_process_vm_readv __NR_process_vm_readv
 #define SYS_process_vm_writev __NR_process_vm_writev
@@ -433,6 +443,7 @@
 #define SYS_ptrace __NR_ptrace
 #define SYS_pwrite64 __NR_pwrite64
 #define SYS_pwritev __NR_pwritev
+#define SYS_pwritev2 __NR_pwritev2
 #define SYS_quotactl __NR_quotactl
 #define SYS_read __NR_read
 #define SYS_readahead __NR_readahead
@@ -538,6 +549,7 @@
 #define SYS_uname __NR_uname
 #define SYS_unlinkat __NR_unlinkat
 #define SYS_unshare __NR_unshare
+#define SYS_userfaultfd __NR_userfaultfd
 #define SYS_utimensat __NR_utimensat
 #define SYS_vhangup __NR_vhangup
 #define SYS_vmsplice __NR_vmsplice

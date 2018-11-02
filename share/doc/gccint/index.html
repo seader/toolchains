@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -83,7 +83,7 @@ ul.no-bullet {list-style: none}
 
 <p>This file documents the internals of the GNU compilers.
 </p><br>
-<p>Copyright &copy; 1988-2015 Free Software Foundation, Inc.
+<p>Copyright &copy; 1988-2017 Free Software Foundation, Inc.
 </p>
 <p>Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -366,7 +366,7 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
   <ul class="no-bullet">
     <li><a name="toc-Tuple-representation-1" href="Tuple-representation.html#Tuple-representation">11.1 Tuple representation</a>
     <ul class="no-bullet">
-      <li><a name="toc-gimple_005fstatement_005fbase-_0028gsbase_0029" href="Tuple-representation.html#gimple_005fstatement_005fbase-_0028gsbase_0029">11.1.1 <code>gimple_statement_base</code> (gsbase)</a></li>
+      <li><a name="toc-gimple-_0028gsbase_0029" href="Tuple-representation.html#gimple-_0028gsbase_0029">11.1.1 <code>gimple</code> (gsbase)</a></li>
       <li><a name="toc-gimple_005fstatement_005fwith_005fops" href="Tuple-representation.html#gimple_005fstatement_005fwith_005fops">11.1.2 <code>gimple_statement_with_ops</code></a></li>
       <li><a name="toc-gimple_005fstatement_005fwith_005fmemory_005fops" href="Tuple-representation.html#gimple_005fstatement_005fwith_005fmemory_005fops">11.1.3 <code>gimple_statement_with_memory_ops</code></a></li>
     </ul></li>
@@ -437,9 +437,8 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
     <li><a name="toc-Static-Single-Assignment" href="SSA.html#SSA">12.3 Static Single Assignment</a>
     <ul class="no-bullet">
       <li><a name="toc-Preserving-the-SSA-form" href="SSA.html#Preserving-the-SSA-form">12.3.1 Preserving the SSA form</a></li>
-      <li><a name="toc-Preserving-the-virtual-SSA-form" href="SSA.html#Preserving-the-virtual-SSA-form">12.3.2 Preserving the virtual SSA form</a></li>
-      <li><a name="toc-Examining-SSA_005fNAME-nodes" href="SSA.html#Examining-SSA_005fNAME-nodes">12.3.3 Examining <code>SSA_NAME</code> nodes</a></li>
-      <li><a name="toc-Walking-the-dominator-tree" href="SSA.html#Walking-the-dominator-tree">12.3.4 Walking the dominator tree</a></li>
+      <li><a name="toc-Examining-SSA_005fNAME-nodes" href="SSA.html#Examining-SSA_005fNAME-nodes">12.3.2 Examining <code>SSA_NAME</code> nodes</a></li>
+      <li><a name="toc-Walking-the-dominator-tree" href="SSA.html#Walking-the-dominator-tree">12.3.3 Walking the dominator tree</a></li>
     </ul></li>
     <li><a name="toc-Alias-analysis-1" href="Alias-analysis.html#Alias-analysis">12.4 Alias analysis</a></li>
     <li><a name="toc-Memory-model-1" href="Memory-model.html#Memory-model">12.5 Memory model</a></li>
@@ -487,7 +486,6 @@ Texts being (a) (see below), and with the Back-Cover Texts being (b)
     <li><a name="toc-IV-analysis-on-RTL" href="loop_002div.html#loop_002div">15.6 IV analysis on RTL</a></li>
     <li><a name="toc-Number-of-iterations-analysis" href="Number-of-iterations.html#Number-of-iterations">15.7 Number of iterations analysis</a></li>
     <li><a name="toc-Data-Dependency-Analysis" href="Dependency-analysis.html#Dependency-analysis">15.8 Data Dependency Analysis</a></li>
-    <li><a name="toc-Omega-a-solver-for-linear-programming-problems" href="Omega.html#Omega">15.9 Omega a solver for linear programming problems</a></li>
   </ul></li>
   <li><a name="toc-Machine-Descriptions" href="Machine-Desc.html#Machine-Desc">16 Machine Descriptions</a>
   <ul class="no-bullet">
@@ -736,8 +734,8 @@ Next: <a href="Contributing.html#Contributing" accesskey="n" rel="next">Contribu
 <p>This manual documents the internals of the GNU compilers, including
 how to port them to new targets and some information about how to
 write front ends for new languages.  It corresponds to the compilers
-(Linaro GCC 5.5-2017.10)
-version 5.5.0.  The use of the GNU compilers is documented in a
+(Linaro GCC 6.4-2018.05)
+version 6.4.1.  The use of the GNU compilers is documented in a
 separate manual.  See <a href="http://gcc.gnu.org/onlinedocs/gcc/index.html#Top">Introduction</a> in <cite>Using the GNU
 Compiler Collection (GCC)</cite>.
 </p>

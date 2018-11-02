@@ -2,7 +2,7 @@
 <html>
 <!-- This file documents the GNU Assembler "as".
 
-Copyright (C) 1991-2014 Free Software Foundation, Inc.
+Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -110,6 +110,15 @@ from the DSP Release 2 Application Specific Extension from that point
 on in the assembly.  This directive implies <code>.set dsp</code>.  The
 <code>.set nodspr2</code> directive prevents DSP Release 2 instructions from
 being accepted.
+</p>
+<a name="index-MIPS-DSP-Release-3-instruction-generation-override"></a>
+<a name="index-_002eset-dspr3"></a>
+<a name="index-_002eset-nodspr3"></a>
+<p>The directive <code>.set dspr3</code> makes the assembler accept instructions
+from the DSP Release 3 Application Specific Extension from that point
+on in the assembly.  This directive implies <code>.set dsp</code> and
+<code>.set dspr2</code>.  The <code>.set nodspr3</code> directive prevents DSP
+Release 3 instructions from being accepted.
 </p>
 <a name="index-MIPS-MT-instruction-generation-override"></a>
 <a name="index-_002eset-mt"></a>

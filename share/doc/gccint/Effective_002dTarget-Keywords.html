@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -211,8 +211,8 @@ and pointers.
 <dd><p>Target does not support a vector alignment mechanism.
 </p>
 </dd>
-<dt><code>vect_no_int_max</code></dt>
-<dd><p>Target does not support a vector max instruction on <code>int</code>.
+<dt><code>vect_no_int_min_max</code></dt>
+<dd><p>Target does not support a vector min and max instruction on <code>int</code>.
 </p>
 </dd>
 <dt><code>vect_no_int_add</code></dt>
@@ -339,6 +339,10 @@ and from <code>char</code> to <code>int</code>.
 </dd>
 <dt><code>vect_floatuint_cvt</code></dt>
 <dd><p>Target supports conversion from <code>float</code> to <code>unsigned int</code>.
+</p>
+</dd>
+<dt><code>vect_max_reduc</code></dt>
+<dd><p>Target supports max reduction for vectors.
 </p></dd>
 </dl>
 
@@ -398,6 +402,12 @@ test system can execute decimal floating point tests.
 <dd><p>ARM target adheres to the ABI for the ARM Architecture.
 </p>
 </dd>
+<dt><code>arm_fp_ok</code></dt>
+<dd><a name="arm_005ffp_005fok"></a><p>ARM target defines <code>__ARM_FP</code> using <code>-mfloat-abi=softfp</code> or
+equivalent options.  Some multilibs may be incompatible with these
+options.
+</p>
+</dd>
 <dt><code>arm_hf_eabi</code></dt>
 <dd><p>ARM target adheres to the VFP and Advanced SIMD Register Arguments
 variant of the ABI for the ARM Architecture (as selected with
@@ -440,6 +450,17 @@ options.  Some multilibs may be incompatible with these options.
 options.  Some multilibs may be incompatible with these options.
 </p>
 </dd>
+<dt><code>arm_fp16_ok</code></dt>
+<dd><a name="arm_005ffp16_005fok"></a><p>Target supports options to generate VFP half-precision floating-point
+instructions.  Some multilibs may be incompatible with these
+options.  This test is valid for ARM only.
+</p>
+</dd>
+<dt><code>arm_fp16_hw</code></dt>
+<dd><p>Target supports executing VFP half-precision floating-point
+instructions.  This test is valid for ARM only.
+</p>
+</dd>
 <dt><code>arm_neon_fp16_ok</code></dt>
 <dd><a name="arm_005fneon_005ffp16_005fok"></a><p>ARM Target supports <code>-mfpu=neon-fp16 -mfloat-abi=softfp</code> or compatible
 options, including <code>-mfp16-format=ieee</code> if necessary to obtain the
@@ -449,6 +470,15 @@ options, including <code>-mfp16-format=ieee</code> if necessary to obtain the
 <dt><code>arm_neon_fp16_hw</code></dt>
 <dd><p>Test system supports executing Neon half-precision float instructions.
 (Implies previous.)
+</p>
+</dd>
+<dt><code>arm_fp16_alternative_ok</code></dt>
+<dd><p>ARM target supports the ARM FP16 alternative format.  Some multilibs
+may be incompatible with the options needed.
+</p>
+</dd>
+<dt><code>arm_fp16_none_ok</code></dt>
+<dd><p>ARM target supports specifying none as the ARM FP16 format.
 </p>
 </dd>
 <dt><code>arm_thumb1_ok</code></dt>
@@ -480,7 +510,7 @@ Some multilibs may be incompatible with these options.
 </p>
 </dd>
 <dt><code>arm_v8_1a_neon_ok</code></dt>
-<dd><p>ARM target supports options to generate ARMv8.1 Adv.SIMD instructions.
+<dd><a name="arm_005fv8_005f1a_005fneon_005fok"></a><p>ARM target supports options to generate ARMv8.1 Adv.SIMD instructions.
 Some multilibs may be incompatible with these options.
 </p>
 </dd>
@@ -490,9 +520,52 @@ multilibs may be incompatible with the options needed.  Implies
 arm_v8_1a_neon_ok.
 </p>
 </dd>
+<dt><code>arm_acq_rel</code></dt>
+<dd><p>ARM target supports acquire-release instructions.
+</p>
+</dd>
+<dt><code>arm_v8_2a_fp16_scalar_ok</code></dt>
+<dd><a name="arm_005fv8_005f2a_005ffp16_005fscalar_005fok"></a><p>ARM target supports options to generate instructions for ARMv8.2 and
+scalar instructions from the FP16 extension.  Some multilibs may be
+incompatible with these options.
+</p>
+</dd>
+<dt><code>arm_v8_2a_fp16_scalar_hw</code></dt>
+<dd><p>ARM target supports executing instructions for ARMv8.2 and scalar
+instructions from the FP16 extension.  Some multilibs may be
+incompatible with these options.  Implies arm_v8_2a_fp16_neon_ok.
+</p>
+</dd>
+<dt><code>arm_v8_2a_fp16_neon_ok</code></dt>
+<dd><a name="arm_005fv8_005f2a_005ffp16_005fneon_005fok"></a><p>ARM target supports options to generate instructions from ARMv8.2 with
+the FP16 extension.  Some multilibs may be incompatible with these
+options.  Implies arm_v8_2a_fp16_scalar_ok.
+</p>
+</dd>
+<dt><code>arm_v8_2a_fp16_neon_hw</code></dt>
+<dd><p>ARM target supports executing instructions from ARMv8.2 with the FP16
+extension.  Some multilibs may be incompatible with these options.
+Implies arm_v8_2a_fp16_neon_ok and arm_v8_2a_fp16_scalar_hw.
+</p>
+</dd>
 <dt><code>arm_prefer_ldrd_strd</code></dt>
 <dd><p>ARM target prefers <code>LDRD</code> and <code>STRD</code> instructions over
 <code>LDM</code> and <code>STM</code> instructions.
+</p>
+</dd>
+<dt><code>arm_thumb1_movt_ok</code></dt>
+<dd><p>ARM target generates Thumb-1 code for <code>-mthumb</code> with <code>MOVW</code>
+and <code>MOVT</code> instructions available.
+</p>
+</dd>
+<dt><code>arm_thumb1_cbz_ok</code></dt>
+<dd><p>ARM target generates Thumb-1 code for <code>-mthumb</code> with
+<code>CBZ</code> and <code>CBNZ</code> instructions available.
+</p>
+</dd>
+<dt><code>arm_cmse_ok</code></dt>
+<dd><p>ARM target supports ARMv8-M Security Extensions, enabled by the <code>-mcmse</code>
+option.
 </p>
 </dd>
 </dl>
@@ -948,6 +1021,10 @@ all targets.
 </dd>
 <dt><code>pie</code></dt>
 <dd><p>Target supports <samp>-pie</samp>, <samp>-fpie</samp> and <samp>-fPIE</samp>.
+</p>
+</dd>
+<dt><code>rdynamic</code></dt>
+<dd><p>Target supports <samp>-rdynamic</samp>.
 </p>
 </dd>
 <dt><code>section_anchors</code></dt>

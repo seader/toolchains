@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -33,7 +33,7 @@ You have freedom to copy and modify this GNU Manual, like GNU
 <link href="Option-Index.html#Option-Index" rel="index" title="Option Index">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Invoking-GCC.html#Invoking-GCC" rel="up" title="Invoking GCC">
-<link href="Preprocessor-Options.html#Preprocessor-Options" rel="next" title="Preprocessor Options">
+<link href="Instrumentation-Options.html#Instrumentation-Options" rel="next" title="Instrumentation Options">
 <link href="Debugging-Options.html#Debugging-Options" rel="prev" title="Debugging Options">
 <style type="text/css">
 <!--
@@ -71,7 +71,7 @@ ul.no-bullet {list-style: none}
 <a name="Optimize-Options"></a>
 <div class="header">
 <p>
-Next: <a href="Preprocessor-Options.html#Preprocessor-Options" accesskey="n" rel="next">Preprocessor Options</a>, Previous: <a href="Debugging-Options.html#Debugging-Options" accesskey="p" rel="prev">Debugging Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Instrumentation-Options.html#Instrumentation-Options" accesskey="n" rel="next">Instrumentation Options</a>, Previous: <a href="Debugging-Options.html#Debugging-Options" accesskey="p" rel="prev">Debugging Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <hr>
 <a name="Options-That-Control-Optimization"></a>
@@ -144,14 +144,16 @@ compilation time.
 -fipa-reference 
 -fmerge-constants 
 -fmove-loop-invariants 
+-freorder-blocks 
 -fshrink-wrap 
 -fsplit-wide-types 
+-fssa-backprop 
+-fssa-phiopt 
 -ftree-bit-ccp 
 -ftree-ccp 
--fssa-phiopt 
 -ftree-ch 
+-ftree-coalesce-vars 
 -ftree-copy-prop 
--ftree-copyrename 
 -ftree-dce 
 -ftree-dominator-opts 
 -ftree-dse 
@@ -203,7 +205,8 @@ also turns on the following optimization flags:
 -foptimize-strlen 
 -fpartial-inlining 
 -fpeephole2 
--freorder-blocks -freorder-blocks-and-partition -freorder-functions 
+-freorder-blocks-algorithm=stc 
+-freorder-blocks-and-partition -freorder-functions 
 -frerun-cse-after-loop  
 -fsched-interblock  -fsched-spec 
 -fschedule-insns  -fschedule-insns2 
@@ -225,7 +228,7 @@ invoking <samp>-O2</samp> on programs that use computed gotos.
 by <samp>-O2</samp> and also turns on the <samp>-finline-functions</samp>,
 <samp>-funswitch-loops</samp>, <samp>-fpredictive-commoning</samp>,
 <samp>-fgcse-after-reload</samp>, <samp>-ftree-loop-vectorize</samp>,
-<samp>-ftree-loop-distribute-patterns</samp>,
+<samp>-ftree-loop-distribute-patterns</samp>, <samp>-fsplit-paths</samp>
 <samp>-ftree-slp-vectorize</samp>, <samp>-fvect-cost-model</samp>,
 <samp>-ftree-partial-pre</samp> and <samp>-fipa-cp-clone</samp> options.
 </p>
@@ -245,8 +248,8 @@ optimizations designed to reduce code size.
 <p><samp>-Os</samp> disables the following optimization flags:
 </p><div class="smallexample">
 <pre class="smallexample">-falign-functions  -falign-jumps  -falign-loops 
--falign-labels  -freorder-blocks  -freorder-blocks-and-partition 
--fprefetch-loop-arrays
+-falign-labels  -freorder-blocks  -freorder-blocks-algorithm=stc 
+-freorder-blocks-and-partition  -fprefetch-loop-arrays
 </pre></div>
 
 </dd>
@@ -481,6 +484,12 @@ of its callers.  This switch does not affect functions using the
 inline functions into the object file.
 </p>
 </dd>
+<dt><code>-fkeep-static-functions</code></dt>
+<dd><a name="index-fkeep_002dstatic_002dfunctions"></a>
+<p>Emit <code>static</code> functions into the object file, even if the function
+is never used.
+</p>
+</dd>
 <dt><code>-fkeep-static-consts</code></dt>
 <dd><a name="index-fkeep_002dstatic_002dconsts"></a>
 <p>Emit variables declared <code>static const</code> when optimization isn&rsquo;t turned
@@ -534,11 +543,14 @@ life-range analysis.  This option is effective only with
 </dd>
 <dt><code>-fno-branch-count-reg</code></dt>
 <dd><a name="index-fno_002dbranch_002dcount_002dreg"></a>
-<p>Do not use &ldquo;decrement and branch&rdquo; instructions on a count register,
-but instead generate a sequence of instructions that decrement a
-register, compare it against zero, then branch based upon the result.
-This option is only meaningful on architectures that support such
-instructions, which include x86, PowerPC, IA-64 and S/390.
+<p>Avoid running a pass scanning for opportunities to use &ldquo;decrement and
+branch&rdquo; instructions on a count register instead of generating sequences
+of instructions that decrement a register, compare it against zero, and
+then branch based upon the result.  This option is only meaningful on
+architectures that support such instructions, which include x86, PowerPC,
+IA-64 and S/390.  Note that the <samp>-fno-branch-count-reg</samp> option
+doesn&rsquo;t remove the decrement and branch instructions from the generated
+instruction stream introduced by other optimization passes.
 </p>
 <p>Enabled by default at <samp>-O1</samp> and higher.
 </p>
@@ -694,6 +706,13 @@ If you use <samp>-Wunsafe-loop-optimizations</samp>, the compiler warns you
 if it finds this kind of loop.
 </p>
 </dd>
+<dt><code>-funconstrained-commons</code></dt>
+<dd><a name="index-funconstrained_002dcommons"></a>
+<p>This option tells the compiler that variables declared in common blocks
+(e.g. Fortran) may later be overridden with longer trailing arrays. This
+prevents certain optimizations that depend on knowing the array bounds.
+</p>
+</dd>
 <dt><code>-fcrossjumping</code></dt>
 <dd><a name="index-fcrossjumping"></a>
 <p>Perform cross-jumping transformation.
@@ -757,10 +776,12 @@ implementation.
 <dt><code>-fdelete-null-pointer-checks</code></dt>
 <dd><a name="index-fdelete_002dnull_002dpointer_002dchecks"></a>
 <p>Assume that programs cannot safely dereference null pointers, and that
-no code or data element resides there.  This enables simple constant
+no code or data element resides at address zero.
+This option enables simple constant
 folding optimizations at all optimization levels.  In addition, other
 optimization passes in GCC use this flag to control global dataflow
 analyses that eliminate useless checks for null pointers; these assume
+that a memory access to address zero always results in a trap, so
 that if a pointer is checked after it has already been dereferenced,
 it cannot be null.
 </p>
@@ -768,9 +789,10 @@ it cannot be null.
 Use <samp>-fno-delete-null-pointer-checks</samp> to disable this optimization
 for programs that depend on that behavior.
 </p>
-<p>Some targets, especially embedded ones, disable this option at all levels.
-Otherwise it is enabled at all levels: <samp>-O0</samp>, <samp>-O1</samp>,
-<samp>-O2</samp>, <samp>-O3</samp>, <samp>-Os</samp>.  Passes that use the information
+<p>This option is enabled by default on most targets.  On Nios II ELF, it
+defaults to off.  On AVR and CR16, this option is completely disabled.  
+</p>
+<p>Passes that use the dataflow information
 are enabled independently at different optimization levels.
 </p>
 </dd>
@@ -827,7 +849,12 @@ value, and any changes during the lifetime of the object are dead when
 the object is destroyed.  Normally dead store elimination will take
 advantage of this; if your code relies on the value of the object
 storage persisting beyond the lifetime of the object, you can use this
-flag to disable this optimization.
+flag to disable this optimization.  To preserve stores before the
+constructor starts (e.g. because your operator new clears the object
+storage) but still treat the object as dead after the destructor you,
+can use <samp>-flifetime-dse=1</samp>.  The default behavior can be
+explicitly selected with <samp>-flifetime-dse=2</samp>.
+<samp>-flifetime-dse=0</samp> is equivalent to <samp>-fno-lifetime-dse</samp>.
 </p>
 </dd>
 <dt><code>-flive-range-shrinkage</code></dt>
@@ -908,13 +935,6 @@ larger.
 <p>Disable sharing of stack slots allocated for pseudo-registers.  Each
 pseudo-register that does not get a hard register gets a separate
 stack slot, and as a result function stack frames are larger.
-</p>
-</dd>
-<dt><code>-fira-verbose=<var>n</var></code></dt>
-<dd><a name="index-fira_002dverbose"></a>
-<p>Control the verbosity of the dump file for the integrated register allocator.
-The default value is 5.  If the value <var>n</var> is greater or equal to 10,
-the dump output is sent to stderr using the same format as <var>n</var> minus 10.
 </p>
 </dd>
 <dt><code>-flra-remat</code></dt>
@@ -1315,12 +1335,13 @@ equivalences that are found only by GCC and equivalences found only by Gold.
 <p>Detect paths that trigger erroneous or undefined behavior due to
 dereferencing a null pointer.  Isolate those paths from the main control
 flow and turn the statement with erroneous or undefined behavior into a trap.
-This flag is enabled by default at <samp>-O2</samp> and higher.
+This flag is enabled by default at <samp>-O2</samp> and higher and depends on
+<samp>-fdelete-null-pointer-checks</samp> also being enabled.
 </p>
 </dd>
 <dt><code>-fisolate-erroneous-paths-attribute</code></dt>
 <dd><a name="index-fisolate_002derroneous_002dpaths_002dattribute"></a>
-<p>Detect paths that trigger erroneous or undefined behavior due a null value
+<p>Detect paths that trigger erroneous or undefined behavior due to a null value
 being used in a way forbidden by a <code>returns_nonnull</code> or <code>nonnull</code>
 attribute.  Isolate those paths from the main control flow and turn the
 statement with erroneous or undefined behavior into a trap.  This is not
@@ -1329,7 +1350,7 @@ currently enabled, but may be enabled by <samp>-O2</samp> in the future.
 </dd>
 <dt><code>-ftree-sink</code></dt>
 <dd><a name="index-ftree_002dsink"></a>
-<p>Perform forward store motion  on trees.  This flag is
+<p>Perform forward store motion on trees.  This flag is
 enabled by default at <samp>-O</samp> and higher.
 </p>
 </dd>
@@ -1346,6 +1367,14 @@ at <samp>-O</samp> and higher.  It requires that <samp>-ftree-ccp</samp> is enab
 <p>Perform sparse conditional constant propagation (CCP) on trees.  This
 pass only operates on local scalar variables and is enabled by default
 at <samp>-O</samp> and higher.
+</p>
+</dd>
+<dt><code>-fssa-backprop</code></dt>
+<dd><a name="index-fssa_002dbackprop"></a>
+<p>Propagate information about uses of a value up the definition chain
+in order to simplify the definitions.  For example, this pass strips
+sign operations if the sign of a value never matters.  The flag is
+enabled by default at <samp>-O</samp> and higher.
 </p>
 </dd>
 <dt><code>-fssa-phiopt</code></dt>
@@ -1417,102 +1446,19 @@ at <samp>-O</samp> and higher.
 </p>
 </dd>
 <dt><code>-ftree-loop-linear</code></dt>
+<dt><code>-floop-interchange</code></dt>
+<dt><code>-floop-strip-mine</code></dt>
+<dt><code>-floop-block</code></dt>
+<dt><code>-floop-unroll-and-jam</code></dt>
 <dd><a name="index-ftree_002dloop_002dlinear"></a>
-<p>Perform loop interchange transformations on tree.  Same as
-<samp>-floop-interchange</samp>.  To use this code transformation, GCC has
+<a name="index-floop_002dinterchange"></a>
+<a name="index-floop_002dstrip_002dmine"></a>
+<a name="index-floop_002dblock"></a>
+<a name="index-floop_002dunroll_002dand_002djam"></a>
+<p>Perform loop nest optimizations.  Same as
+<samp>-floop-nest-optimize</samp>.  To use this code transformation, GCC has
 to be configured with <samp>--with-isl</samp> to enable the Graphite loop
 transformation infrastructure.
-</p>
-</dd>
-<dt><code>-floop-interchange</code></dt>
-<dd><a name="index-floop_002dinterchange"></a>
-<p>Perform loop interchange transformations on loops.  Interchanging two
-nested loops switches the inner and outer loops.  For example, given a
-loop like:
-</p><div class="smallexample">
-<pre class="smallexample">DO J = 1, M
-  DO I = 1, N
-    A(J, I) = A(J, I) * C
-  ENDDO
-ENDDO
-</pre></div>
-<p>loop interchange transforms the loop as if it were written:
-</p><div class="smallexample">
-<pre class="smallexample">DO I = 1, N
-  DO J = 1, M
-    A(J, I) = A(J, I) * C
-  ENDDO
-ENDDO
-</pre></div>
-<p>which can be beneficial when <code>N</code> is larger than the caches,
-because in Fortran, the elements of an array are stored in memory
-contiguously by column, and the original loop iterates over rows,
-potentially creating at each access a cache miss.  This optimization
-applies to all the languages supported by GCC and is not limited to
-Fortran.  To use this code transformation, GCC has to be configured
-with <samp>--with-isl</samp> to enable the Graphite loop transformation
-infrastructure.
-</p>
-</dd>
-<dt><code>-floop-strip-mine</code></dt>
-<dd><a name="index-floop_002dstrip_002dmine"></a>
-<p>Perform loop strip mining transformations on loops.  Strip mining
-splits a loop into two nested loops.  The outer loop has strides
-equal to the strip size and the inner loop has strides of the
-original loop within a strip.  The strip length can be changed
-using the <samp>loop-block-tile-size</samp> parameter.  For example,
-given a loop like:
-</p><div class="smallexample">
-<pre class="smallexample">DO I = 1, N
-  A(I) = A(I) + C
-ENDDO
-</pre></div>
-<p>loop strip mining transforms the loop as if it were written:
-</p><div class="smallexample">
-<pre class="smallexample">DO II = 1, N, 51
-  DO I = II, min (II + 50, N)
-    A(I) = A(I) + C
-  ENDDO
-ENDDO
-</pre></div>
-<p>This optimization applies to all the languages supported by GCC and is
-not limited to Fortran.  To use this code transformation, GCC has to
-be configured with <samp>--with-isl</samp> to enable the Graphite loop
-transformation infrastructure.
-</p>
-</dd>
-<dt><code>-floop-block</code></dt>
-<dd><a name="index-floop_002dblock"></a>
-<p>Perform loop blocking transformations on loops.  Blocking strip mines
-each loop in the loop nest such that the memory accesses of the
-element loops fit inside caches.  The strip length can be changed
-using the <samp>loop-block-tile-size</samp> parameter.  For example, given
-a loop like:
-</p><div class="smallexample">
-<pre class="smallexample">DO I = 1, N
-  DO J = 1, M
-    A(J, I) = B(I) + C(J)
-  ENDDO
-ENDDO
-</pre></div>
-<p>loop blocking transforms the loop as if it were written:
-</p><div class="smallexample">
-<pre class="smallexample">DO II = 1, N, 51
-  DO JJ = 1, M, 51
-    DO I = II, min (II + 50, N)
-      DO J = JJ, min (JJ + 50, M)
-        A(J, I) = B(I) + C(J)
-      ENDDO
-    ENDDO
-  ENDDO
-ENDDO
-</pre></div>
-<p>which can be beneficial when <code>M</code> is larger than the caches,
-because the innermost loop iterates over a smaller amount of data
-which can be kept in the caches.  This optimization applies to all the
-languages supported by GCC and is not limited to Fortran.  To use this
-code transformation, GCC has to be configured with <samp>--with-isl</samp>
-to enable the Graphite loop transformation infrastructure.
 </p>
 </dd>
 <dt><code>-fgraphite-identity</code></dt>
@@ -1521,24 +1467,16 @@ to enable the Graphite loop transformation infrastructure.
 the polyhedral representation and transform it back to gimple.  Using
 <samp>-fgraphite-identity</samp> we can check the costs or benefits of the
 GIMPLE -&gt; GRAPHITE -&gt; GIMPLE transformation.  Some minimal optimizations
-are also performed by the code generator ISL, like index splitting and
+are also performed by the code generator isl, like index splitting and
 dead code elimination in loops.
 </p>
 </dd>
 <dt><code>-floop-nest-optimize</code></dt>
 <dd><a name="index-floop_002dnest_002doptimize"></a>
-<p>Enable the ISL based loop nest optimizer.  This is a generic loop nest
+<p>Enable the isl based loop nest optimizer.  This is a generic loop nest
 optimizer based on the Pluto optimization algorithms.  It calculates a loop
 structure optimized for data-locality and parallelism.  This option
 is experimental.
-</p>
-</dd>
-<dt><code>-floop-unroll-and-jam</code></dt>
-<dd><a name="index-floop_002dunroll_002dand_002djam"></a>
-<p>Enable unroll and jam for the ISL based loop nest optimizer.  The unroll 
-factor can be changed using the <samp>loop-unroll-jam-size</samp> parameter.
-The unrolled dimension (counting from the most inner one) can be changed 
-using the <samp>loop-unroll-jam-depth</samp> parameter.                 .
 </p>
 </dd>
 <dt><code>-floop-parallelize-all</code></dt>
@@ -1549,10 +1487,15 @@ not contain loop carried dependences without checking that it is
 profitable to parallelize the loops.
 </p>
 </dd>
-<dt><code>-fcheck-data-deps</code></dt>
-<dd><a name="index-fcheck_002ddata_002ddeps"></a>
-<p>Compare the results of several data dependence analyzers.  This option
-is used for debugging the data dependence analyzers.
+<dt><code>-ftree-coalesce-vars</code></dt>
+<dd><a name="index-ftree_002dcoalesce_002dvars"></a>
+<p>While transforming the program out of the SSA representation, attempt to
+reduce copying by coalescing versions of different user-defined
+variables, instead of just compiler temporaries.  This may severely
+limit the ability to debug an optimized program compiled with
+<samp>-fno-var-tracking-assignments</samp>.  In the negated form, this flag
+prevents SSA coalescing of user variables.  This option is enabled by
+default if optimization is enabled, and it does very little otherwise.
 </p>
 </dd>
 <dt><code>-ftree-loop-if-convert</code></dt>
@@ -1678,35 +1621,6 @@ references with scalars to prevent committing structures to memory too
 early.  This flag is enabled by default at <samp>-O</samp> and higher.
 </p>
 </dd>
-<dt><code>-ftree-copyrename</code></dt>
-<dd><a name="index-ftree_002dcopyrename"></a>
-<p>Perform copy renaming on trees.  This pass attempts to rename compiler
-temporaries to other variables at copy locations, usually resulting in
-variable names which more closely resemble the original variables.  This flag
-is enabled by default at <samp>-O</samp> and higher.
-</p>
-</dd>
-<dt><code>-ftree-coalesce-inlined-vars</code></dt>
-<dd><a name="index-ftree_002dcoalesce_002dinlined_002dvars"></a>
-<p>Tell the copyrename pass (see <samp>-ftree-copyrename</samp>) to attempt to
-combine small user-defined variables too, but only if they are inlined
-from other functions.  It is a more limited form of
-<samp>-ftree-coalesce-vars</samp>.  This may harm debug information of such
-inlined variables, but it keeps variables of the inlined-into
-function apart from each other, such that they are more likely to
-contain the expected values in a debugging session.
-</p>
-</dd>
-<dt><code>-ftree-coalesce-vars</code></dt>
-<dd><a name="index-ftree_002dcoalesce_002dvars"></a>
-<p>Tell the copyrename pass (see <samp>-ftree-copyrename</samp>) to attempt to
-combine small user-defined variables too, instead of just compiler
-temporaries.  This may severely limit the ability to debug an optimized
-program compiled with <samp>-fno-var-tracking-assignments</samp>.  In the
-negated form, this flag prevents SSA coalescing of user variables,
-including inlined ones.  This option is enabled by default.
-</p>
-</dd>
 <dt><code>-ftree-ter</code></dt>
 <dd><a name="index-ftree_002dter"></a>
 <p>Perform temporary expression replacement during the SSA-&gt;normal phase.  Single
@@ -1776,6 +1690,13 @@ checks like array bound checks and null pointer checks.  This is
 enabled by default at <samp>-O2</samp> and higher.  Null pointer check
 elimination is only done if <samp>-fdelete-null-pointer-checks</samp> is
 enabled.
+</p>
+</dd>
+<dt><code>-fsplit-paths</code></dt>
+<dd><a name="index-fsplit_002dpaths"></a>
+<p>Split paths leading to loop backedges.  This can improve dead code
+elimination and common subexpression elimination.  This is enabled by
+default at <samp>-O2</samp> and above.
 </p>
 </dd>
 <dt><code>-fsplit-ivs-in-unroller</code></dt>
@@ -1863,14 +1784,27 @@ of <code>__builtin_expect</code> are easier to understand.
 <p>Reorder basic blocks in the compiled function in order to reduce number of
 taken branches and improve code locality.
 </p>
-<p>Enabled at levels <samp>-O2</samp>, <samp>-O3</samp>.
+<p>Enabled at levels <samp>-O</samp>, <samp>-O2</samp>, <samp>-O3</samp>, <samp>-Os</samp>.
+</p>
+</dd>
+<dt><code>-freorder-blocks-algorithm=<var>algorithm</var></code></dt>
+<dd><a name="index-freorder_002dblocks_002dalgorithm"></a>
+<p>Use the specified algorithm for basic block reordering.  The
+<var>algorithm</var> argument can be &lsquo;<samp>simple</samp>&rsquo;, which does not increase
+code size (except sometimes due to secondary effects like alignment),
+or &lsquo;<samp>stc</samp>&rsquo;, the &ldquo;software trace cache&rdquo; algorithm, which tries to
+put all often executed code together, minimizing the number of branches
+executed by making extra copies of code.
+</p>
+<p>The default is &lsquo;<samp>simple</samp>&rsquo; at levels <samp>-O</samp>, <samp>-Os</samp>, and
+&lsquo;<samp>stc</samp>&rsquo; at levels <samp>-O2</samp>, <samp>-O3</samp>.
 </p>
 </dd>
 <dt><code>-freorder-blocks-and-partition</code></dt>
 <dd><a name="index-freorder_002dblocks_002dand_002dpartition"></a>
 <p>In addition to reordering basic blocks in the compiled function, in order
 to reduce number of taken branches, partitions hot and cold basic blocks
-into separate sections of the assembly and .o files, to improve
+into separate sections of the assembly and <samp>.o</samp> files, to improve
 paging and cache locality performance.
 </p>
 <p>This optimization is automatically turned off in the presence of
@@ -2001,6 +1935,7 @@ equivalent and mean that functions are not aligned.
 in that case, it is rounded up.
 </p>
 <p>If <var>n</var> is not specified or is zero, use a machine-dependent default.
+The maximum allowed <var>n</var> option value is 65536.
 </p>
 <p>Enabled at levels <samp>-O2</samp>, <samp>-O3</samp>.
 </p>
@@ -2021,6 +1956,7 @@ are greater than this value, then their values are used instead.
 </p>
 <p>If <var>n</var> is not specified or is zero, use a machine-dependent default
 which is very likely to be &lsquo;<samp>1</samp>&rsquo;, meaning no alignment.
+The maximum allowed <var>n</var> option value is 65536.
 </p>
 <p>Enabled at levels <samp>-O2</samp>, <samp>-O3</samp>.
 </p>
@@ -2035,6 +1971,7 @@ operations.
 </p>
 <p><samp>-fno-align-loops</samp> and <samp>-falign-loops=1</samp> are
 equivalent and mean that loops are not aligned.
+The maximum allowed <var>n</var> option value is 65536.
 </p>
 <p>If <var>n</var> is not specified or is zero, use a machine-dependent default.
 </p>
@@ -2053,6 +1990,7 @@ need be executed.
 equivalent and mean that loops are not aligned.
 </p>
 <p>If <var>n</var> is not specified or is zero, use a machine-dependent default.
+The maximum allowed <var>n</var> option value is 65536.
 </p>
 <p>Enabled at levels <samp>-O2</samp>, <samp>-O3</samp>.
 </p>
@@ -2115,6 +2053,9 @@ had been part of the same translation unit.
 </p>
 <p>To use the link-time optimizer, <samp>-flto</samp> and optimization
 options should be specified at compile time and during the final link.
+It is recommended that you compile all the files participating in the
+same link with the same options and also specify those options at
+link time.  
 For example:
 </p>
 <div class="smallexample">
@@ -2145,15 +2086,15 @@ merges them together into a single GIMPLE representation and optimizes
 them as usual to produce <samp>myprog</samp>.
 </p>
 <p>The only important thing to keep in mind is that to enable link-time
-optimizations you need to use the GCC driver to perform the link-step.
+optimizations you need to use the GCC driver to perform the link step.
 GCC then automatically performs link-time optimization if any of the
 objects involved were compiled with the <samp>-flto</samp> command-line option.  
 You generally
 should specify the optimization options to be used for link-time
 optimization though GCC tries to be clever at guessing an
-optimization level to use from the options used at compile-time
-if you fail to specify one at link-time.  You can always override
-the automatic decision to do link-time optimization at link-time
+optimization level to use from the options used at compile time
+if you fail to specify one at link time.  You can always override
+the automatic decision to do link-time optimization at link time
 by passing <samp>-fno-lto</samp> to the link command.
 </p>
 <p>To make whole program optimization effective, it is necessary to make
@@ -2166,14 +2107,14 @@ the linker plugin is not available, <samp>-fwhole-program</samp> should be
 used to allow the compiler to make these assumptions, which leads
 to more aggressive optimization decisions.
 </p>
-<p>When <samp>-fuse-linker-plugin</samp> is not enabled then, when a file is
+<p>When <samp>-fuse-linker-plugin</samp> is not enabled, when a file is
 compiled with <samp>-flto</samp>, the generated object file is larger than
 a regular object file because it contains GIMPLE bytecodes and the usual
 final code (see <samp>-ffat-lto-objects</samp>.  This means that
 object files with LTO information can be linked as normal object
 files; if <samp>-fno-lto</samp> is passed to the linker, no
 interprocedural optimizations are applied.  Note that when
-<samp>-fno-fat-lto-objects</samp> is enabled the compile-stage is faster
+<samp>-fno-fat-lto-objects</samp> is enabled the compile stage is faster
 but you cannot perform a regular, non-LTO link on them.
 </p>
 <p>Additionally, the optimization flags used to compile individual files
@@ -2199,22 +2140,21 @@ further processing.
 </p>
 <p>There are some code generation flags preserved by GCC when
 generating bytecodes, as they need to be used during the final link
-stage.  Generally options specified at link-time override those
-specified at compile-time.
+stage.  Generally options specified at link time override those
+specified at compile time.
 </p>
 <p>If you do not specify an optimization level option <samp>-O</samp> at
-link-time then GCC computes one based on the optimization levels
-used when compiling the object files.  The highest optimization
-level wins here.
+link time, then GCC uses the highest optimization level 
+used when compiling the object files.
 </p>
-<p>Currently, the following options and their setting are take from
-the first object file that explicitely specified it: 
+<p>Currently, the following options and their settings are taken from
+the first object file that explicitly specifies them: 
 <samp>-fPIC</samp>, <samp>-fpic</samp>, <samp>-fpie</samp>, <samp>-fcommon</samp>,
 <samp>-fexceptions</samp>, <samp>-fnon-call-exceptions</samp>, <samp>-fgnu-tm</samp>
 and all the <samp>-m</samp> target flags.
 </p>
-<p>Certain ABI changing flags are required to match in all compilation-units
-and trying to override this at link-time with a conflicting value
+<p>Certain ABI-changing flags are required to match in all compilation units,
+and trying to override this at link time with a conflicting value
 is ignored.  This includes options such as <samp>-freg-struct-return</samp>
 and <samp>-fpcc-struct-return</samp>. 
 </p>
@@ -2223,12 +2163,8 @@ and <samp>-fpcc-struct-return</samp>.
 are passed through to the link stage and merged conservatively for
 conflicting translation units.  Specifically
 <samp>-fno-strict-overflow</samp>, <samp>-fwrapv</samp> and <samp>-fno-trapv</samp> take
-precedence and for example <samp>-ffp-contract=off</samp> takes precedence
-over <samp>-ffp-contract=fast</samp>.  You can override them at linke-time.
-</p>
-<p>It is recommended that you compile all the files participating in the
-same link with the same options and also specify those options at
-link time.
+precedence; and for example <samp>-ffp-contract=off</samp> takes precedence
+over <samp>-ffp-contract=fast</samp>.  You can override them at link time.
 </p>
 <p>If LTO encounters objects with C linkage declared with incompatible
 types in separate translation units to be linked together (undefined
@@ -2330,7 +2266,7 @@ the link-time optimization step directly from the WPA phase.
 <dt><code>-flto-odr-type-merging</code></dt>
 <dd><a name="index-flto_002dodr_002dtype_002dmerging"></a>
 <p>Enable streaming of mangled types names of C++ types and their unification
-at linktime.  This increases size of LTO object files, but enable
+at link time.  This increases size of LTO object files, but enables
 diagnostics about One Definition Rule violations.
 </p>
 </dd>
@@ -2342,22 +2278,6 @@ conjunction with LTO mode (<samp>-flto</samp>).  Valid
 values are 0 (no compression) to 9 (maximum compression).  Values
 outside this range are clamped to either 0 or 9.  If the option is not
 given, a default balanced compression setting is used.
-</p>
-</dd>
-<dt><code>-flto-report</code></dt>
-<dd><a name="index-flto_002dreport"></a>
-<p>Prints a report with internal details on the workings of the link-time
-optimizer.  The contents of this report vary from version to version.
-It is meant to be useful to GCC developers when processing object
-files in LTO mode (via <samp>-flto</samp>).
-</p>
-<p>Disabled by default.
-</p>
-</dd>
-<dt><code>-flto-report-wpa</code></dt>
-<dd><a name="index-flto_002dreport_002dwpa"></a>
-<p>Like <samp>-flto-report</samp>, but only print for the WPA phase of Link
-Time Optimization.
 </p>
 </dd>
 <dt><code>-fuse-linker-plugin</code></dt>
@@ -2430,33 +2350,6 @@ GCC uses heuristics to correct or smooth out such inconsistencies. By
 default, GCC emits an error message when an inconsistent profile is detected.
 </p>
 </dd>
-<dt><code>-fprofile-dir=<var>path</var></code></dt>
-<dd><a name="index-fprofile_002ddir"></a>
-
-<p>Set the directory to search for the profile data files in to <var>path</var>.
-This option affects only the profile data generated by
-<samp>-fprofile-generate</samp>, <samp>-ftest-coverage</samp>, <samp>-fprofile-arcs</samp>
-and used by <samp>-fprofile-use</samp> and <samp>-fbranch-probabilities</samp>
-and its related options.  Both absolute and relative paths can be used.
-By default, GCC uses the current directory as <var>path</var>, thus the
-profile data file appears in the same directory as the object file.
-</p>
-</dd>
-<dt><code>-fprofile-generate</code></dt>
-<dt><code>-fprofile-generate=<var>path</var></code></dt>
-<dd><a name="index-fprofile_002dgenerate"></a>
-
-<p>Enable options usually used for instrumenting application to produce
-profile useful for later recompilation with profile feedback based
-optimization.  You must use <samp>-fprofile-generate</samp> both when
-compiling and when linking your program.
-</p>
-<p>The following options are enabled: <samp>-fprofile-arcs</samp>, <samp>-fprofile-values</samp>, <samp>-fvpt</samp>.
-</p>
-<p>If <var>path</var> is specified, GCC looks at the <var>path</var> to find
-the profile feedback data files. See <samp>-fprofile-dir</samp>.
-</p>
-</dd>
 <dt><code>-fprofile-use</code></dt>
 <dt><code>-fprofile-use=<var>path</var></code></dt>
 <dd><a name="index-fprofile_002duse"></a>
@@ -2466,6 +2359,10 @@ which are generally profitable only with profile feedback available:
 <samp>-fbranch-probabilities</samp>, <samp>-fvpt</samp>,
 <samp>-funroll-loops</samp>, <samp>-fpeel-loops</samp>, <samp>-ftracer</samp>, 
 <samp>-ftree-vectorize</samp>, and <samp>ftree-loop-distribute-patterns</samp>.
+</p>
+<p>Before you can use this option, you must first generate profiling information.
+See <a href="#Optimize-Options">Optimize Options</a>, for information about the <samp>-fprofile-generate</samp>
+option.
 </p>
 <p>By default, GCC emits an error message if the feedback profiles do not
 match the source code.  This error can be turned into a warning by using
@@ -2603,7 +2500,7 @@ it might, and <samp>-fno-math-errno</samp> is the default.
 
 <p>Allow optimizations for floating-point arithmetic that (a) assume
 that arguments and results are valid and (b) may violate IEEE or
-ANSI standards.  When used at link-time, it may include libraries
+ANSI standards.  When used at link time, it may include libraries
 or startup files that change the default FPU control word or other
 similar optimizations.
 </p>
@@ -2767,8 +2664,8 @@ section includes experimental options that may produce broken code.
 <dt><code>-fbranch-probabilities</code></dt>
 <dd><a name="index-fbranch_002dprobabilities"></a>
 <p>After running a program compiled with <samp>-fprofile-arcs</samp>
-(see <a href="Debugging-Options.html#Debugging-Options">Options for Debugging Your Program or
-<code>gcc</code></a>), you can compile it a second time using
+(see <a href="Instrumentation-Options.html#Instrumentation-Options">Instrumentation Options</a>),
+you can compile it a second time using
 <samp>-fbranch-probabilities</samp>, to improve optimizations based on
 the number of times each branch was taken.  When a program
 compiled with <samp>-fprofile-arcs</samp> exits, it saves arc execution
@@ -2931,34 +2828,6 @@ threading.
 branch target registers within any basic block.
 </p>
 </dd>
-<dt><code>-fstack-protector</code></dt>
-<dd><a name="index-fstack_002dprotector"></a>
-<p>Emit extra code to check for buffer overflows, such as stack smashing
-attacks.  This is done by adding a guard variable to functions with
-vulnerable objects.  This includes functions that call <code>alloca</code>, and
-functions with buffers larger than 8 bytes.  The guards are initialized
-when a function is entered and then checked when the function exits.
-If a guard check fails, an error message is printed and the program exits.
-</p>
-</dd>
-<dt><code>-fstack-protector-all</code></dt>
-<dd><a name="index-fstack_002dprotector_002dall"></a>
-<p>Like <samp>-fstack-protector</samp> except that all functions are protected.
-</p>
-</dd>
-<dt><code>-fstack-protector-strong</code></dt>
-<dd><a name="index-fstack_002dprotector_002dstrong"></a>
-<p>Like <samp>-fstack-protector</samp> but includes additional functions to
-be protected &mdash; those that have local array definitions, or have
-references to local frame addresses.
-</p>
-</dd>
-<dt><code>-fstack-protector-explicit</code></dt>
-<dd><a name="index-fstack_002dprotector_002dexplicit"></a>
-<p>Like <samp>-fstack-protector</samp> but only protects those functions which
-have the <code>stack_protect</code> attribute
-</p>
-</dd>
 <dt><code>-fstdarg-opt</code></dt>
 <dd><a name="index-fstdarg_002dopt"></a>
 <p>Optimize the prologue of variadic argument functions with respect to usage of
@@ -3014,6 +2883,15 @@ without notice in future releases.
 <dt><code>predictable-branch-outcome</code></dt>
 <dd><p>When branch is predicted to be taken with probability lower than this threshold
 (in percent), then it is considered well predictable. The default is 10.
+</p>
+</dd>
+<dt><code>max-rtl-if-conversion-insns</code></dt>
+<dd><p>RTL if-conversion tries to remove conditional branches around a block and
+replace them with conditionally executed instructions.  This parameter
+gives the maximum number of instructions in a block which should be
+considered for if-conversion.  The default is 10, though the compiler will
+also use other heuristics to decide whether if-conversion is likely to be
+profitable.
 </p>
 </dd>
 <dt><code>max-crossjump-edges</code></dt>
@@ -3355,41 +3233,6 @@ Large expressions slow the analyzer.
 Complex expressions slow the analyzer.
 </p>
 </dd>
-<dt><code>omega-max-vars</code></dt>
-<dd><p>The maximum number of variables in an Omega constraint system.
-The default value is 128.
-</p>
-</dd>
-<dt><code>omega-max-geqs</code></dt>
-<dd><p>The maximum number of inequalities in an Omega constraint system.
-The default value is 256.
-</p>
-</dd>
-<dt><code>omega-max-eqs</code></dt>
-<dd><p>The maximum number of equalities in an Omega constraint system.
-The default value is 128.
-</p>
-</dd>
-<dt><code>omega-max-wild-cards</code></dt>
-<dd><p>The maximum number of wildcard variables that the Omega solver is
-able to insert.  The default value is 18.
-</p>
-</dd>
-<dt><code>omega-hash-table-size</code></dt>
-<dd><p>The size of the hash table in the Omega solver.  The default value is
-550.
-</p>
-</dd>
-<dt><code>omega-max-keys</code></dt>
-<dd><p>The maximal number of keys used by the Omega solver.  The default
-value is 500.
-</p>
-</dd>
-<dt><code>omega-eliminate-redundant-constraints</code></dt>
-<dd><p>When set to 1, use expensive methods to eliminate all redundant
-constraints.  The default value is 0.
-</p>
-</dd>
 <dt><code>vect-max-version-for-alignment-checks</code></dt>
 <dd><p>The maximum number of run-time checks that can be performed when
 doing loop versioning for alignment in the vectorizer.
@@ -3402,7 +3245,7 @@ doing loop versioning for alias in the vectorizer.
 </dd>
 <dt><code>vect-max-peeling-for-alignment</code></dt>
 <dd><p>The maximum number of loop peels to enhance access alignment
-for vectorizer. Value -1 means &rsquo;no limit&rsquo;.
+for vectorizer. Value -1 means no limit.
 </p>
 </dd>
 <dt><code>max-iterations-to-track</code></dt>
@@ -3473,16 +3316,18 @@ growth.
 threshold (in percent).
 </p>
 </dd>
-<dt><code>tracer-min-branch-ratio</code></dt>
-<dt><code>tracer-min-branch-ratio-feedback</code></dt>
+<dt><code>tracer-min-branch-probability</code></dt>
+<dt><code>tracer-min-branch-probability-feedback</code></dt>
 <dd>
 <p>Stop forward growth if the best edge has probability lower than this
 threshold.
 </p>
-<p>Similarly to <samp>tracer-dynamic-coverage</samp> two values are present, one for
-compilation for profile feedback and one for compilation without.  The value
-for compilation with profile feedback needs to be more conservative (higher) in
-order to make tracer effective.
+<p>Similarly to <samp>tracer-dynamic-coverage</samp> two parameters are
+provided.  <samp>tracer-min-branch-probability-feedback</samp> is used for
+compilation with profile feedback and <samp>tracer-min-branch-probability</samp>
+compilation without.  The value for compilation with profile feedback
+needs to be more conservative (higher) in order to make tracer
+effective.
 </p>
 </dd>
 <dt><code>max-cse-path-length</code></dt>
@@ -3545,21 +3390,6 @@ Increasing values mean more aggressive optimization, making the compilation time
 increase with probably slightly better performance.  The default value is 500.
 </p>
 </dd>
-<dt><code>reorder-blocks-duplicate</code></dt>
-<dt><code>reorder-blocks-duplicate-feedback</code></dt>
-<dd>
-<p>Used by the basic block reordering pass to decide whether to use unconditional
-branch or duplicate the code on its destination.  Code is duplicated when its
-estimated size is smaller than this value multiplied by the estimated size of
-unconditional jump in the hot spots of the program.
-</p>
-<p>The <samp>reorder-block-duplicate-feedback</samp> parameter
-is used only when profile
-feedback is available.  It may be set to higher values than
-<samp>reorder-block-duplicate</samp> since information about the hot spots is more
-accurate.
-</p>
-</dd>
 <dt><code>max-sched-ready-insns</code></dt>
 <dd><p>The maximum number of instructions ready to be issued the scheduler should
 consider at any given time during the first scheduling pass.  Increasing
@@ -3608,7 +3438,7 @@ speculative insns are scheduled.
 The default value is 40.
 </p>
 </dd>
-<dt><code>sched-spec-state-edge-prob-cutoff</code></dt>
+<dt><code>sched-state-edge-prob-cutoff</code></dt>
 <dd><p>The minimum probability an edge must have for the scheduler to save its
 state across it.
 The default value is 10.
@@ -3631,7 +3461,7 @@ selective scheduling.  This is the limit on the number of iterations
 through which the instruction may be pipelined.  The default value is 2.
 </p>
 </dd>
-<dt><code>selsched-max-insns-to-rename</code></dt>
+<dt><code>selsched-insns-to-rename</code></dt>
 <dd><p>The maximum number of best instructions in the ready list that are considered
 for renaming in the selective scheduler.  The default value is 2.
 </p>
@@ -3751,7 +3581,7 @@ redundancies for loads and stores.  If this limit is hit the search
 is aborted and the load or store is not considered redundant.  The
 number of queries is algorithmically limited to the number of
 stores on all paths from the load to the function entry.
-The default maxmimum number of queries is 1000.
+The default maximum number of queries is 1000.
 </p>
 </dd>
 <dt><code>ira-max-loops-num</code></dt>
@@ -3799,7 +3629,7 @@ parameter is 1000 for <samp>-O1</samp> and 10000 for <samp>-O2</samp> and above.
 </p>
 </dd>
 <dt><code>loop-max-datarefs-for-datadeps</code></dt>
-<dd><p>Building data dapendencies is expensive for very large loops.  This
+<dd><p>Building data dependencies is expensive for very large loops.  This
 parameter limits the number of data references in loops that are
 considered for data dependence analysis.  These large loops are no
 handled by the optimizations using loop data dependencies.
@@ -3948,10 +3778,16 @@ The number of partitions should exceed the number of CPUs used for compilation.
 The default value is 32.
 </p>
 </dd>
-<dt><code>lto-minpartition</code></dt>
+<dt><code>lto-min-partition</code></dt>
 <dd><p>Size of minimal partition for WHOPR (in estimated instructions).
 This prevents expenses of splitting very small programs into too many
 partitions.
+</p>
+</dd>
+<dt><code>lto-max-partition</code></dt>
+<dd><p>Size of max partition for WHOPR (in estimated instructions).
+to provide an upper bound for individual size of partition.
+Meant to be used only with balanced partitioning.
 </p>
 </dd>
 <dt><code>cxx-max-namespaces-for-diagnostic-help</code></dt>
@@ -3968,7 +3804,7 @@ statements with memory operands as those are even more profitable so sink.
 </p>
 </dd>
 <dt><code>max-stores-to-sink</code></dt>
-<dd><p>The maximum number of conditional stores paires that can be sunk.  Set to 0
+<dd><p>The maximum number of conditional store pairs that can be sunk.  Set to 0
 if either vectorization (<samp>-ftree-vectorize</samp>) or if-conversion
 (<samp>-ftree-loop-if-convert</samp>) is disabled.  The default is 2.
 </p>
@@ -4018,7 +3854,7 @@ To disable global objects protection use <samp>--param asan-globals=0</samp>.
 </dd>
 <dt><code>asan-stack</code></dt>
 <dd><p>Enable buffer overflow detection for stack objects.  This kind of
-protection is enabled by default when using<samp>-fsanitize=address</samp>.
+protection is enabled by default when using <samp>-fsanitize=address</samp>.
 To disable stack protection use <samp>--param asan-stack=0</samp> option.
 </p>
 </dd>
@@ -4079,6 +3915,34 @@ path.  The default is 10.
 automaton.  The default is 50.
 </p>
 </dd>
+<dt><code>parloops-chunk-size</code></dt>
+<dd><p>Chunk size of omp schedule for loops parallelized by parloops.  The default
+is 0.
+</p>
+</dd>
+<dt><code>parloops-schedule</code></dt>
+<dd><p>Schedule type of omp schedule for loops parallelized by parloops (static,
+dynamic, guided, auto, runtime).  The default is static.
+</p>
+</dd>
+<dt><code>max-ssa-name-query-depth</code></dt>
+<dd><p>Maximum depth of recursion when querying properties of SSA names in things
+like fold routines.  One level of recursion corresponds to following a
+use-def chain.
+</p>
+</dd>
+<dt><code>hsa-gen-debug-stores</code></dt>
+<dd><p>Enable emission of special debug stores within HSA kernels which are
+then read and reported by libgomp plugin.  Generation of these stores
+is disabled by default, use <samp>--param hsa-gen-debug-stores=1</samp> to
+enable it.
+</p>
+</dd>
+<dt><code>max-speculative-devirt-maydefs</code></dt>
+<dd><p>The maximum number of may-defs we analyze when looking for a must-def
+specifying the dynamic type of an object that invokes a virtual call
+we may be able to devirtualize speculatively.
+</p></dd>
 </dl>
 </dd>
 </dl>
@@ -4086,7 +3950,7 @@ automaton.  The default is 50.
 <hr>
 <div class="header">
 <p>
-Next: <a href="Preprocessor-Options.html#Preprocessor-Options" accesskey="n" rel="next">Preprocessor Options</a>, Previous: <a href="Debugging-Options.html#Debugging-Options" accesskey="p" rel="prev">Debugging Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="Instrumentation-Options.html#Instrumentation-Options" accesskey="n" rel="next">Instrumentation Options</a>, Previous: <a href="Debugging-Options.html#Debugging-Options" accesskey="p" rel="prev">Debugging Options</a>, Up: <a href="Invoking-GCC.html#Invoking-GCC" accesskey="u" rel="up">Invoking GCC</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Option-Index.html#Option-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 
 

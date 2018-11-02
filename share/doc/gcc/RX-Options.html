@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Next: <a href="S_002f390-and-zSeries-Options.html#S_002f390-and-zSeries-Options"
 </div>
 <hr>
 <a name="RX-Options-1"></a>
-<h4 class="subsection">3.17.38 RX Options</h4>
+<h4 class="subsection">3.18.39 RX Options</h4>
 <a name="index-RX-Options"></a>
 
 <p>These command-line options are defined for RX targets:
@@ -110,7 +110,7 @@ This is because the RX FPU instructions are themselves unsafe.
 </p>
 </dd>
 <dt><code>-mcpu=<var>name</var></code></dt>
-<dd><a name="index-mcpu-9"></a>
+<dd><a name="index-mcpu-10"></a>
 <p>Selects the type of RX CPU to be targeted.  Currently three types are
 supported, the generic &lsquo;<samp>RX600</samp>&rsquo; and &lsquo;<samp>RX200</samp>&rsquo; series hardware and
 the specific &lsquo;<samp>RX610</samp>&rsquo; CPU.  The default is &lsquo;<samp>RX600</samp>&rsquo;.
@@ -159,7 +159,7 @@ actual register to hold the small data area pointer is chosen.
 </dd>
 <dt><code>-msim</code></dt>
 <dt><code>-mno-sim</code></dt>
-<dd><a name="index-msim-8"></a>
+<dd><a name="index-msim-9"></a>
 <a name="index-mno_002dsim"></a>
 <p>Use the simulator runtime.  The default is to use the libgloss
 board-specific runtime.
@@ -255,6 +255,38 @@ issue a warning for each extra fast interrupt handler found, as the RX
 only supports one such interrupt.
 </p>
 </dd>
+<dt><code>-mallow-string-insns</code></dt>
+<dt><code>-mno-allow-string-insns</code></dt>
+<dd><a name="index-mallow_002dstring_002dinsns"></a>
+<a name="index-mno_002dallow_002dstring_002dinsns"></a>
+<p>Enables or disables the use of the string manipulation instructions
+<code>SMOVF</code>, <code>SCMPU</code>, <code>SMOVB</code>, <code>SMOVU</code>, <code>SUNTIL</code>
+<code>SWHILE</code> and also the <code>RMPA</code> instruction.  These
+instructions may prefetch data, which is not safe to do if accessing
+an I/O register.  (See section 12.2.7 of the RX62N Group User&rsquo;s Manual
+for more information).
+</p>
+<p>The default is to allow these instructions, but it is not possible for
+GCC to reliably detect all circumstances where a string instruction
+might be used to access an I/O register, so their use cannot be
+disabled automatically.  Instead it is reliant upon the programmer to
+use the <samp>-mno-allow-string-insns</samp> option if their program
+accesses I/O space.
+</p>
+<p>When the instructions are enabled GCC defines the C preprocessor
+symbol <code>__RX_ALLOW_STRING_INSNS__</code>, otherwise it defines the
+symbol <code>__RX_DISALLOW_STRING_INSNS__</code>.
+</p>
+</dd>
+<dt><code>-mjsr</code></dt>
+<dt><code>-mno-jsr</code></dt>
+<dd><a name="index-mjsr"></a>
+<a name="index-mno_002djsr"></a>
+<p>Use only (or not only) <code>JSR</code> instructions to access functions.
+This option can be used when code size exceeds the range of <code>BSR</code>
+instructions.  Note that <samp>-mno-jsr</samp> does not mean to not use
+<code>JSR</code> but instead means that any type of branch may be used.
+</p></dd>
 </dl>
 
 <p><em>Note:</em> The generic GCC command-line option <samp>-ffixed-<var>reg</var></samp>

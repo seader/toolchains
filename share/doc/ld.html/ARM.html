@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(GNU Binutils)
-version 2.25.1.
+(Linaro_Binutils-2018.05)
+version 2.27.0.
 
-Copyright (C) 1991-2014 Free Software Foundation, Inc.
+Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -102,8 +102,10 @@ import tables. By default this option is turned off.
 <a name="index-BE8"></a>
 <a name="index-_002d_002dbe8"></a>
 <p>The &lsquo;<samp>--be8</samp>&rsquo; switch instructs <code>ld</code> to generate BE8 format
-executables.  This option is only valid when linking big-endian objects.
-The resulting image will contain big-endian data and little-endian code.
+executables.  This option is only valid when linking big-endian
+objects - ie ones which have been assembled with the <samp>-EB</samp>
+option.  The resulting image will contain big-endian data and
+little-endian code.
 </p>
 <a name="index-TARGET1"></a>
 <a name="index-_002d_002dtarget1_002drel"></a>
@@ -212,6 +214,48 @@ unconditionally by specifying &lsquo;<samp>--no-fix-arm1176</samp>&rsquo;.
 Programmer Advice Notice&rdquo; available on the ARM documentation website at:
 http://infocenter.arm.com/.
 </p>
+<a name="index-STM32L4xx-erratum-workaround"></a>
+<a name="index-_002d_002dfix_002dstm32l4xx_002d629360"></a>
+
+<p>The &lsquo;<samp>--fix-stm32l4xx-629360</samp>&rsquo; switch enables a link-time
+workaround for a bug in the bus matrix / memory controller for some of
+the STM32 Cortex-M4 based products (STM32L4xx).  When accessing
+off-chip memory via the affected bus for bus reads of 9 words or more,
+the bus can generate corrupt data and/or abort.  These are only
+core-initiated accesses (not DMA), and might affect any access:
+integer loads such as LDM, POP and floating-point loads such as VLDM,
+VPOP.  Stores are not affected.
+</p>
+<p>The bug can be avoided by splitting memory accesses into the
+necessary chunks to keep bus reads below 8 words.
+</p>
+<p>The workaround is not enabled by default, this is equivalent to use
+&lsquo;<samp>--fix-stm32l4xx-629360=none</samp>&rsquo;.  If you know you are using buggy
+STM32L4xx hardware, you can enable the workaround by specifying the
+linker option &lsquo;<samp>--fix-stm32l4xx-629360</samp>&rsquo;, or the equivalent
+&lsquo;<samp>--fix-stm32l4xx-629360=default</samp>&rsquo;.
+</p>
+<p>If the workaround is enabled, instructions are scanned for
+potentially-troublesome sequences, and a veneer is created for each
+such sequence which may trigger the erratum.  The veneer consists in a
+replacement sequence emulating the behaviour of the original one and a
+branch back to the subsequent instruction.  The original instruction is
+then replaced with a branch to the veneer.
+</p>
+<p>The workaround does not always preserve the memory access order for
+the LDMDB instruction, when the instruction loads the PC.
+</p>
+<p>The workaround is not able to handle problematic instructions when
+they are in the middle of an IT block, since a branch is not allowed
+there.  In that case, the linker reports a warning and no replacement
+occurs.
+</p>
+<p>The workaround is not able to replace problematic instructions with a
+PC-relative branch instruction if the &lsquo;<samp>.text</samp>&rsquo; section is too
+large.  In that case, when the branch that replaces the original code
+cannot be encoded, the linker reports a warning and no replacement
+occurs.
+</p>
 <a name="index-NO_005fENUM_005fSIZE_005fWARNING"></a>
 <a name="index-_002d_002dno_002denum_002dsize_002dwarning"></a>
 <p>The <samp>--no-enum-size-warning</samp> switch prevents the linker from
@@ -291,6 +335,11 @@ otherwise.
 <p>The &lsquo;<samp>--long-plt</samp>&rsquo; option enables the use of 16 byte PLT entries
 which support up to 4Gb of code.  The default is to use 12 byte PLT
 entries which only support 512Mb of code.
+</p>
+<a name="index-_002d_002dno_002dapply_002ddynamic_002drelocs"></a>
+<a name="index-AArch64-rela-addend"></a>
+<p>The &lsquo;<samp>--no-apply-dynamic-relocs</samp>&rsquo; option makes AArch64 linker do not apply
+link-time values for dynamic relocations.
 </p>
 
 

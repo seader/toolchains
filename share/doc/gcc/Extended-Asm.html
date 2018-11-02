@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -75,7 +75,7 @@ Next: <a href="Constraints.html#Constraints" accesskey="n" rel="next">Constraint
 </div>
 <hr>
 <a name="Extended-Asm-_002d-Assembler-Instructions-with-C-Expression-Operands"></a>
-<h4 class="subsection">6.43.2 Extended Asm - Assembler Instructions with C Expression Operands</h4>
+<h4 class="subsection">6.44.2 Extended Asm - Assembler Instructions with C Expression Operands</h4>
 <a name="index-extended-asm"></a>
 <a name="index-assembly-language-in-C_002c-extended"></a>
 
@@ -191,7 +191,7 @@ printf(&quot;%d\n&quot;, dst);
 <p>This code copies <code>src</code> to <code>dst</code> and add 1 to <code>dst</code>.
 </p>
 <a name="Volatile"></a><a name="Volatile-1"></a>
-<h4 class="subsubsection">6.43.2.1 Volatile</h4>
+<h4 class="subsubsection">6.44.2.1 Volatile</h4>
 <a name="index-volatile-asm"></a>
 <a name="index-asm-volatile"></a>
 
@@ -313,7 +313,7 @@ Using &lsquo;<samp>%=</samp>&rsquo;
 (see <a href="#AssemblerTemplate">AssemblerTemplate</a>) may help resolve this problem.
 </p>
 <a name="AssemblerTemplate"></a><a name="Assembler-Template"></a>
-<h4 class="subsubsection">6.43.2.2 Assembler Template</h4>
+<h4 class="subsubsection">6.44.2.2 Assembler Template</h4>
 <a name="index-asm-assembler-template"></a>
 
 <p>An assembler template is a literal string containing assembler instructions.
@@ -433,7 +433,7 @@ assembler template such as this:
 <p>There is no support for nesting dialect alternatives.
 </p>
 <a name="OutputOperands"></a><a name="Output-Operands"></a>
-<h4 class="subsubsection">6.43.2.3 Output Operands</h4>
+<h4 class="subsubsection">6.44.2.3 Output Operands</h4>
 <a name="index-asm-output-operands"></a>
 
 <p>An <code>asm</code> statement has zero or more output operands indicating the names
@@ -497,7 +497,7 @@ If you list as many alternates as the <code>asm</code> statement allows, you per
 the optimizers to produce the best possible code. 
 If you must use a specific register, but your Machine Constraints do not
 provide sufficient control to select the specific register you want, 
-local register variables may provide a solution (see <a href="Local-Reg-Vars.html#Local-Reg-Vars">Local Reg Vars</a>).
+local register variables may provide a solution (see <a href="Local-Register-Variables.html#Local-Register-Variables">Local Register Variables</a>).
 </p>
 </dd>
 <dt><var>cvariablename</var></dt>
@@ -611,8 +611,101 @@ pointed to by <code>e</code>
 in a register, you can enable it to choose the best location
 for <code>d</code> by specifying both constraints.
 </p>
+<a name="FlagOutputOperands"></a><a name="Flag-Output-Operands"></a>
+<h4 class="subsubsection">6.44.2.4 Flag Output Operands</h4>
+<a name="index-asm-flag-output-operands"></a>
+
+<p>Some targets have a special register that holds the &ldquo;flags&rdquo; for the
+result of an operation or comparison.  Normally, the contents of that
+register are either unmodifed by the asm, or the asm is considered to
+clobber the contents.
+</p>
+<p>On some targets, a special form of output operand exists by which
+conditions in the flags register may be outputs of the asm.  The set of
+conditions supported are target specific, but the general rule is that
+the output variable must be a scalar integer, and the value is boolean.
+When supported, the target defines the preprocessor symbol
+<code>__GCC_ASM_FLAG_OUTPUTS__</code>.
+</p>
+<p>Because of the special nature of the flag output operands, the constraint
+may not include alternatives.
+</p>
+<p>Most often, the target has only one flags register, and thus is an implied
+operand of many instructions.  In this case, the operand should not be
+referenced within the assembler template via <code>%0</code> etc, as there&rsquo;s
+no corresponding text in the assembly language.
+</p>
+<dl compact="compact">
+<dt>x86 family</dt>
+<dd><p>The flag output constraints for the x86 family are of the form
+&lsquo;<samp>=@cc<var>cond</var></samp>&rsquo; where <var>cond</var> is one of the standard
+conditions defined in the ISA manual for <code>j<var>cc</var></code> or
+<code>set<var>cc</var></code>.
+</p>
+<dl compact="compact">
+<dt><code>a</code></dt>
+<dd><p>&ldquo;above&rdquo; or unsigned greater than
+</p></dd>
+<dt><code>ae</code></dt>
+<dd><p>&ldquo;above or equal&rdquo; or unsigned greater than or equal
+</p></dd>
+<dt><code>b</code></dt>
+<dd><p>&ldquo;below&rdquo; or unsigned less than
+</p></dd>
+<dt><code>be</code></dt>
+<dd><p>&ldquo;below or equal&rdquo; or unsigned less than or equal
+</p></dd>
+<dt><code>c</code></dt>
+<dd><p>carry flag set
+</p></dd>
+<dt><code>e</code></dt>
+<dt><code>z</code></dt>
+<dd><p>&ldquo;equal&rdquo; or zero flag set
+</p></dd>
+<dt><code>g</code></dt>
+<dd><p>signed greater than
+</p></dd>
+<dt><code>ge</code></dt>
+<dd><p>signed greater than or equal
+</p></dd>
+<dt><code>l</code></dt>
+<dd><p>signed less than
+</p></dd>
+<dt><code>le</code></dt>
+<dd><p>signed less than or equal
+</p></dd>
+<dt><code>o</code></dt>
+<dd><p>overflow flag set
+</p></dd>
+<dt><code>p</code></dt>
+<dd><p>parity flag set
+</p></dd>
+<dt><code>s</code></dt>
+<dd><p>sign flag set
+</p></dd>
+<dt><code>na</code></dt>
+<dt><code>nae</code></dt>
+<dt><code>nb</code></dt>
+<dt><code>nbe</code></dt>
+<dt><code>nc</code></dt>
+<dt><code>ne</code></dt>
+<dt><code>ng</code></dt>
+<dt><code>nge</code></dt>
+<dt><code>nl</code></dt>
+<dt><code>nle</code></dt>
+<dt><code>no</code></dt>
+<dt><code>np</code></dt>
+<dt><code>ns</code></dt>
+<dt><code>nz</code></dt>
+<dd><p>&ldquo;not&rdquo; <var>flag</var>, or inverted versions of those above
+</p></dd>
+</dl>
+
+</dd>
+</dl>
+
 <a name="InputOperands"></a><a name="Input-Operands"></a>
-<h4 class="subsubsection">6.43.2.4 Input Operands</h4>
+<h4 class="subsubsection">6.44.2.5 Input Operands</h4>
 <a name="index-asm-input-operands"></a>
 <a name="index-asm-expressions"></a>
 
@@ -652,7 +745,7 @@ When you list more than one possible location (for example, &lsquo;<samp>&quot;i
 the compiler chooses the most efficient one based on the current context.
 If you must use a specific register, but your Machine Constraints do not
 provide sufficient control to select the specific register you want, 
-local register variables may provide a solution (see <a href="Local-Reg-Vars.html#Local-Reg-Vars">Local Reg Vars</a>).
+local register variables may provide a solution (see <a href="Local-Register-Variables.html#Local-Register-Variables">Local Register Variables</a>).
 </p>
 <p>Input constraints can also be digits (for example, <code>&quot;0&quot;</code>). This indicates 
 that the specified input must be in the same place as the output constraint 
@@ -721,7 +814,7 @@ the generated assembler code.
 </pre></div>
 
 <a name="Clobbers"></a><a name="Clobbers-1"></a>
-<h4 class="subsubsection">6.43.2.5 Clobbers</h4>
+<h4 class="subsubsection">6.44.2.6 Clobbers</h4>
 <a name="index-asm-clobbers"></a>
 
 <p>While the compiler is aware of changes to entries listed in the output 
@@ -736,7 +829,7 @@ enclosed in double quotes and separated by commas.
 <p>Clobber descriptions may not in any way overlap with an input or output 
 operand. For example, you may not have an operand describing a register class 
 with one member when listing that register in the clobber list. Variables 
-declared to live in specific registers (see <a href="Explicit-Reg-Vars.html#Explicit-Reg-Vars">Explicit Reg Vars</a>) and used 
+declared to live in specific registers (see <a href="Explicit-Register-Variables.html#Explicit-Register-Variables">Explicit Register Variables</a>) and used 
 as <code>asm</code> input or output operands must have no part mentioned in the 
 clobber description. In particular, there is no way to specify that input 
 operands get modified without also specifying them as output operands.
@@ -795,7 +888,7 @@ ten bytes of a string, use a memory input like:
 </dl>
 
 <a name="GotoLabels"></a><a name="Goto-Labels"></a>
-<h4 class="subsubsection">6.43.2.6 Goto Labels</h4>
+<h4 class="subsubsection">6.44.2.7 Goto Labels</h4>
 <a name="index-asm-goto-labels"></a>
 
 <p><code>asm goto</code> allows assembly code to jump to one or more C labels.  The
@@ -864,7 +957,7 @@ error:
 </pre></div>
 
 <a name="x86Operandmodifiers"></a><a name="x86-Operand-Modifiers"></a>
-<h4 class="subsubsection">6.43.2.7 x86 Operand Modifiers</h4>
+<h4 class="subsubsection">6.44.2.8 x86 Operand Modifiers</h4>
 
 <p>References to input, output, and goto operands in the assembler template
 of extended <code>asm</code> statements can use 
@@ -924,8 +1017,11 @@ top:
 <tr><td><code>c</code></td><td>Require a constant operand and print the constant expression with no punctuation.</td><td><code>%c1</code></td><td><code>2</code></td><td><code>2</code></td></tr>
 </table>
 
+<p><code>V</code> is a special modifier which prints the name of the full integer
+register without <code>%</code>.
+</p>
 <a name="x86floatingpointasmoperands"></a><a name="x86-Floating_002dPoint-asm-Operands"></a>
-<h4 class="subsubsection">6.43.2.8 x86 Floating-Point <code>asm</code> Operands</h4>
+<h4 class="subsubsection">6.44.2.9 x86 Floating-Point <code>asm</code> Operands</h4>
 
 <p>On x86 targets, there are several rules on the usage of stack-like registers
 in the operands of an <code>asm</code>.  These rules apply only to the operands

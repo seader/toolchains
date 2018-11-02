@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -107,19 +107,6 @@ quantity.
 </p></dd></dl>
 
 <dl>
-<dt><a name="index-REAL_005fVALUES_005fEQUAL"></a>Macro: <em>int</em> <strong>REAL_VALUES_EQUAL</strong> <em>(REAL_VALUE_TYPE <var>x</var>, REAL_VALUE_TYPE <var>y</var>)</em></dt>
-<dd><p>Compares for equality the two values, <var>x</var> and <var>y</var>.  If the target
-floating point format supports negative zeroes and/or NaNs,
-&lsquo;<samp>REAL_VALUES_EQUAL (-0.0, 0.0)</samp>&rsquo; is true, and
-&lsquo;<samp>REAL_VALUES_EQUAL (NaN, NaN)</samp>&rsquo; is false.
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-REAL_005fVALUES_005fLESS"></a>Macro: <em>int</em> <strong>REAL_VALUES_LESS</strong> <em>(REAL_VALUE_TYPE <var>x</var>, REAL_VALUE_TYPE <var>y</var>)</em></dt>
-<dd><p>Tests whether <var>x</var> is less than <var>y</var>.
-</p></dd></dl>
-
-<dl>
 <dt><a name="index-REAL_005fVALUE_005fFIX"></a>Macro: <em>HOST_WIDE_INT</em> <strong>REAL_VALUE_FIX</strong> <em>(REAL_VALUE_TYPE <var>x</var>)</em></dt>
 <dd><p>Truncates <var>x</var> to a signed integer, rounding toward zero.
 </p></dd></dl>
@@ -151,22 +138,6 @@ defined by the C language for both.
 <dl>
 <dt><a name="index-REAL_005fVALUE_005fISNAN"></a>Macro: <em>int</em> <strong>REAL_VALUE_ISNAN</strong> <em>(REAL_VALUE_TYPE <var>x</var>)</em></dt>
 <dd><p>Determines whether <var>x</var> represents a &ldquo;NaN&rdquo; (not-a-number).
-</p></dd></dl>
-
-<dl>
-<dt><a name="index-REAL_005fARITHMETIC"></a>Macro: <em>void</em> <strong>REAL_ARITHMETIC</strong> <em>(REAL_VALUE_TYPE <var>output</var>, enum tree_code <var>code</var>, REAL_VALUE_TYPE <var>x</var>, REAL_VALUE_TYPE <var>y</var>)</em></dt>
-<dd><p>Calculates an arithmetic operation on the two floating point values
-<var>x</var> and <var>y</var>, storing the result in <var>output</var> (which must be a
-variable).
-</p>
-<p>The operation to be performed is specified by <var>code</var>.  Only the
-following codes are supported: <code>PLUS_EXPR</code>, <code>MINUS_EXPR</code>,
-<code>MULT_EXPR</code>, <code>RDIV_EXPR</code>, <code>MAX_EXPR</code>, <code>MIN_EXPR</code>.
-</p>
-<p>If <code>REAL_ARITHMETIC</code> is asked to evaluate division by zero and the
-target&rsquo;s floating point format cannot represent infinity, it will call
-<code>abort</code>.  Callers should check for this situation first, using
-<code>MODE_HAS_INFINITIES</code>.  See <a href="Storage-Layout.html#Storage-Layout">Storage Layout</a>.
 </p></dd></dl>
 
 <dl>

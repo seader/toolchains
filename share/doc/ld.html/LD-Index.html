@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <!-- This file documents the GNU linker LD
-(GNU Binutils)
-version 2.25.1.
+(Linaro_Binutils-2018.05)
+version 2.27.0.
 
-Copyright (C) 1991-2014 Free Software Foundation, Inc.
+Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -159,6 +159,10 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dbuild_002did"><code>--build-id</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dbuild_002did_003dstyle"><code>--build-id=<var>style</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcheck_002dsections"><code>--check-sections</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcompress_002ddebug_002dsections_003dnone"><code>--compress-debug-sections=none</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcompress_002ddebug_002dsections_003dzlib"><code>--compress-debug-sections=zlib</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcompress_002ddebug_002dsections_003dzlib_002dgabi"><code>--compress-debug-sections=zlib-gabi</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcompress_002ddebug_002dsections_003dzlib_002dgnu"><code>--compress-debug-sections=zlib-gnu</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcopy_002ddt_002dneeded_002dentries"><code>--copy-dt-needed-entries</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dcref"><code>--cref</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002ddefault_002dimported_002dsymver"><code>--default-imported-symver</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -215,6 +219,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dfix_002darm1176"><code>--fix-arm1176</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dfix_002dcortex_002da53_002d835769"><code>--fix-cortex-a53-835769</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dfix_002dcortex_002da8"><code>--fix-cortex-a8</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
+<tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dfix_002dstm32l4xx_002d629360"><code>--fix-stm32l4xx-629360</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dfix_002dv4bx"><code>--fix-v4bx</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dfix_002dv4bx_002dinterworking"><code>--fix-v4bx-interworking</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dforce_002ddynamic"><code>--force-dynamic</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -257,6 +262,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002daccept_002dunknown_002dinput_002darch"><code>--no-accept-unknown-input-arch</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dadd_002dneeded"><code>--no-add-needed</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dallow_002dshlib_002dundefined"><code>--no-allow-shlib-undefined</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dno_002dapply_002ddynamic_002drelocs"><code>--no-apply-dynamic-relocs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002das_002dneeded"><code>--no-as-needed</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dbind"><code>--no-bind</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dcheck_002dsections"><code>--no-check-sections</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -264,6 +270,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002ddefine_002dcommon"><code>--no-define-common</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002ddemangle"><code>--no-demangle</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002ddotsyms"><code>--no-dotsyms</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002ddynamic_002dlinker"><code>--no-dynamic-linker</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dno_002denum_002dsize_002dwarning"><code>--no-enum-size-warning</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dexport_002ddynamic"><code>--no-export-dynamic</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dfatal_002dwarnings"><code>--no-fatal-warnings</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -286,7 +293,9 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002dplt_002dstatic_002dchain"><code>--no-plt-static-chain</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002dplt_002dthread_002dsafe"><code>--no-plt-thread-safe</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dprint_002dgc_002dsections"><code>--no-print-gc-sections</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002dsave_002drestore_002dfuncs"><code>--no-save-restore-funcs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dno_002dseh"><code>--no-seh</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002dtls_002dget_002daddr_002doptimize"><code>--no-tls-get-addr-optimize</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC-ELF32.html#index-_002d_002dno_002dtls_002doptimize"><code>--no-tls-optimize</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC-ELF32.html#PowerPC-ELF32">PowerPC ELF32</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002dtls_002doptimize-1"><code>--no-tls-optimize</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dno_002dtoc_002doptimize"><code>--no-toc-optimize</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
@@ -303,6 +312,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dnxcompat"><code>--nxcompat</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002doformat_003doutput_002dformat"><code>--oformat=<var>output-format</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002domagic"><code>--omagic</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dorphan_002dhandling_003dMODE"><code>--orphan-handling=<var>MODE</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dout_002dimplib"><code>--out-implib</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002doutput_002ddef"><code>--output-def</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002doutput_003doutput"><code>--output=<var>output</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -315,6 +325,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dpop_002dstate"><code>--pop-state</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dprint_002dgc_002dsections"><code>--print-gc-sections</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dprint_002dmap"><code>--print-map</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dprint_002dmemory_002dusage"><code>--print-memory-usage</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dprint_002doutput_002dformat"><code>--print-output-format</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dpush_002dstate"><code>--push-state</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dreduce_002dmemory_002doverheads"><code>--reduce-memory-overheads</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -324,7 +335,9 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="PowerPC-ELF32.html#index-_002d_002drelax-on-PowerPC"><code>--relax on PowerPC</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC-ELF32.html#PowerPC-ELF32">PowerPC ELF32</a></td></tr>
 <tr><td></td><td valign="top"><a href="Xtensa.html#index-_002d_002drelax-on-Xtensa"><samp>--relax</samp> on Xtensa</a>:</td><td>&nbsp;</td><td valign="top"><a href="Xtensa.html#Xtensa">Xtensa</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002drelocatable"><code>--relocatable</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-_002d_002drequire_002ddefined_003dsymbol"><code>--require-defined=<var>symbol</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dretain_002dsymbols_002dfile_003dfilename"><code>--retain-symbols-file=<var>filename</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dsave_002drestore_002dfuncs"><code>--save-restore-funcs</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dscript_003dscript"><code>--script=<var>script</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC-ELF32.html#index-_002d_002dsdata_002dgot"><code>--sdata-got</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC-ELF32.html#PowerPC-ELF32">PowerPC ELF32</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dsection_002dalignment"><code>--section-alignment</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -351,6 +364,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dtarget1_002drel"><code>--target1-rel</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dtarget2_003dtype"><code>--target2=<var>type</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-_002d_002dthumb_002dentry_003dentry"><code>--thumb-entry=<var>entry</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
+<tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-_002d_002dtls_002dget_002daddr_002doptimize"><code>--tls-get-addr-optimize</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dtrace"><code>--trace</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dtrace_002dsymbol_003dsymbol"><code>--trace-symbol=<var>symbol</var></code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-_002d_002dtraditional_002dformat"><code>--traditional-format</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -474,6 +488,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Input-Section-Common.html#index-_005bCOMMON_005d">[COMMON]</a>:</td><td>&nbsp;</td><td valign="top"><a href="Input-Section-Common.html#Input-Section-Common">Input Section Common</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="LD-Index_cp_letter-A">A</a></th><td></td><td></td></tr>
+<tr><td></td><td valign="top"><a href="ARM.html#index-AArch64-rela-addend">AArch64 rela addend</a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="MRI.html#index-ABSOLUTE-_0028MRI_0029"><code>ABSOLUTE</code> (MRI)</a>:</td><td>&nbsp;</td><td valign="top"><a href="MRI.html#MRI">MRI</a></td></tr>
 <tr><td></td><td valign="top"><a href="Expression-Section.html#index-absolute-and-relocatable-symbols">absolute and relocatable symbols</a>:</td><td>&nbsp;</td><td valign="top"><a href="Expression-Section.html#Expression-Section">Expression Section</a></td></tr>
 <tr><td></td><td valign="top"><a href="Expression-Section.html#index-absolute-expressions">absolute expressions</a>:</td><td>&nbsp;</td><td valign="top"><a href="Expression-Section.html#Expression-Section">Expression Section</a></td></tr>
@@ -547,6 +562,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="WIN32.html#index-creating-a-DEF-file">creating a DEF file</a>:</td><td>&nbsp;</td><td valign="top"><a href="WIN32.html#WIN32">WIN32</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-cross-reference-table">cross reference table</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Miscellaneous-Commands.html#index-cross-references">cross references</a>:</td><td>&nbsp;</td><td valign="top"><a href="Miscellaneous-Commands.html#Miscellaneous-Commands">Miscellaneous Commands</a></td></tr>
+<tr><td></td><td valign="top"><a href="Miscellaneous-Commands.html#index-cross-references-1">cross references</a>:</td><td>&nbsp;</td><td valign="top"><a href="Miscellaneous-Commands.html#Miscellaneous-Commands">Miscellaneous Commands</a></td></tr>
 <tr><td></td><td valign="top"><a href="Location-Counter.html#index-current-output-location">current output location</a>:</td><td>&nbsp;</td><td valign="top"><a href="Location-Counter.html#Location-Counter">Location Counter</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th><a name="LD-Index_cp_letter-D">D</a></th><td></td><td></td></tr>
@@ -558,6 +574,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-DEF-files_002c-creating">DEF files, creating</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Environment.html#index-default-emulation">default emulation</a>:</td><td>&nbsp;</td><td valign="top"><a href="Environment.html#Environment">Environment</a></td></tr>
 <tr><td></td><td valign="top"><a href="Environment.html#index-default-input-format">default input format</a>:</td><td>&nbsp;</td><td valign="top"><a href="Environment.html#Environment">Environment</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-defined-symbol">defined symbol</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Builtin-Functions.html#index-DEFINED_0028symbol_0029"><code>DEFINED(<var>symbol</var>)</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Builtin-Functions.html#Builtin-Functions">Builtin Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-deleting-local-symbols">deleting local symbols</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Environment.html#index-demangling_002c-default">demangling, default</a>:</td><td>&nbsp;</td><td valign="top"><a href="Environment.html#Environment">Environment</a></td></tr>
@@ -715,6 +732,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="MEMORY.html#index-memory-regions">memory regions</a>:</td><td>&nbsp;</td><td valign="top"><a href="MEMORY.html#MEMORY">MEMORY</a></td></tr>
 <tr><td></td><td valign="top"><a href="Output-Section-Region.html#index-memory-regions-and-sections">memory regions and sections</a>:</td><td>&nbsp;</td><td valign="top"><a href="Output-Section-Region.html#Output-Section-Region">Output Section Region</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-memory-usage">memory usage</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-memory-usage-1">memory usage</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-Merging-exidx-entries">Merging exidx entries</a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="Builtin-Functions.html#index-MIN"><code>MIN</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Builtin-Functions.html#Builtin-Functions">Builtin Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="MIPS.html#index-MIPS-microMIPS-instruction-choice-selection">MIPS microMIPS instruction choice selection</a>:</td><td>&nbsp;</td><td valign="top"><a href="MIPS.html#MIPS">MIPS</a></td></tr>
@@ -731,6 +749,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Nios-II.html#index-Nios-II-call-relaxation">Nios II call relaxation</a>:</td><td>&nbsp;</td><td valign="top"><a href="Nios-II.html#Nios-II">Nios II</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-NMAGIC">NMAGIC</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Miscellaneous-Commands.html#index-NOCROSSREFS_0028sections_0029"><code>NOCROSSREFS(<var>sections</var>)</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Miscellaneous-Commands.html#Miscellaneous-Commands">Miscellaneous Commands</a></td></tr>
+<tr><td></td><td valign="top"><a href="Miscellaneous-Commands.html#index-NOCROSSREFS_005fTO_0028tosection-fromsections_0029"><code>NOCROSSREFS_TO(<var>tosection</var> <var>fromsections</var>)</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Miscellaneous-Commands.html#Miscellaneous-Commands">Miscellaneous Commands</a></td></tr>
 <tr><td></td><td valign="top"><a href="Output-Section-Type.html#index-NOLOAD"><code>NOLOAD</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Output-Section-Type.html#Output-Section-Type">Output Section Type</a></td></tr>
 <tr><td></td><td valign="top"><a href="Builtin-Functions.html#index-not-enough-room-for-program-headers">not enough room for program headers</a>:</td><td>&nbsp;</td><td valign="top"><a href="Builtin-Functions.html#Builtin-Functions">Builtin Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="ARM.html#index-NO_005fENUM_005fSIZE_005fWARNING">NO_ENUM_SIZE_WARNING</a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
@@ -755,6 +774,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="MEMORY.html#index-ORIGIN-_003d"><code>ORIGIN =</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="MEMORY.html#MEMORY">MEMORY</a></td></tr>
 <tr><td></td><td valign="top"><a href="Builtin-Functions.html#index-ORIGIN_0028memory_0029"><code>ORIGIN(<var>memory</var>)</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Builtin-Functions.html#Builtin-Functions">Builtin Functions</a></td></tr>
 <tr><td></td><td valign="top"><a href="Orphan-Sections.html#index-orphan">orphan</a>:</td><td>&nbsp;</td><td valign="top"><a href="Orphan-Sections.html#Orphan-Sections">Orphan Sections</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-orphan-sections">orphan sections</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-output-file-after-errors">output file after errors</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Format-Commands.html#index-output-file-format-in-linker-script">output file format in linker script</a>:</td><td>&nbsp;</td><td valign="top"><a href="Format-Commands.html#Format-Commands">Format Commands</a></td></tr>
 <tr><td></td><td valign="top"><a href="File-Commands.html#index-output-file-name-in-linker-script">output file name in linker script</a>:</td><td>&nbsp;</td><td valign="top"><a href="File-Commands.html#File-Commands">File Commands</a></td></tr>
@@ -790,11 +810,13 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-PLT-call-stub-static-chain">PowerPC64 PLT call stub static chain</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-PLT-call-stub-thread-safety">PowerPC64 PLT call stub thread safety</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-PLT-stub-alignment">PowerPC64 PLT stub alignment</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
+<tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-register-save_002frestore-functions">PowerPC64 register save/restore functions</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-stub-grouping">PowerPC64 stub grouping</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-stub-symbols">PowerPC64 stub symbols</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-TLS-optimization">PowerPC64 TLS optimization</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-TOC-optimization">PowerPC64 TOC optimization</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-TOC-sorting">PowerPC64 TOC sorting</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
+<tr><td></td><td valign="top"><a href="PowerPC64-ELF64.html#index-PowerPC64-_005f_005ftls_005fget_005faddr-optimization">PowerPC64 __tls_get_addr optimization</a>:</td><td>&nbsp;</td><td valign="top"><a href="PowerPC64-ELF64.html#PowerPC64-ELF64">PowerPC64 ELF64</a></td></tr>
 <tr><td></td><td valign="top"><a href="Operators.html#index-precedence-in-expressions">precedence in expressions</a>:</td><td>&nbsp;</td><td valign="top"><a href="Operators.html#Operators">Operators</a></td></tr>
 <tr><td></td><td valign="top"><a href="Output-Section-Type.html#index-prevent-unnecessary-loading">prevent unnecessary loading</a>:</td><td>&nbsp;</td><td valign="top"><a href="Output-Section-Type.html#Output-Section-Type">Output Section Type</a></td></tr>
 <tr><td></td><td valign="top"><a href="PHDRS.html#index-program-headers">program headers</a>:</td><td>&nbsp;</td><td valign="top"><a href="PHDRS.html#PHDRS">PHDRS</a></td></tr>
@@ -864,6 +886,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Output-Section-Phdr.html#index-section_002c-assigning-to-program-header">section, assigning to program header</a>:</td><td>&nbsp;</td><td valign="top"><a href="Output-Section-Phdr.html#Output-Section-Phdr">Output Section Phdr</a></td></tr>
 <tr><td></td><td valign="top"><a href="SECTIONS.html#index-SECTIONS"><code>SECTIONS</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="SECTIONS.html#SECTIONS">SECTIONS</a></td></tr>
 <tr><td></td><td valign="top"><a href="Output-Section-Discarding.html#index-sections_002c-discarding">sections, discarding</a>:</td><td>&nbsp;</td><td valign="top"><a href="Output-Section-Discarding.html#Output-Section-Discarding">Output Section Discarding</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-sections_002c-orphan">sections, orphan</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-segment-origins_002c-cmd-line">segment origins, cmd line</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="PHDRS.html#index-segments_002c-ELF">segments, ELF</a>:</td><td>&nbsp;</td><td valign="top"><a href="PHDRS.html#PHDRS">PHDRS</a></td></tr>
 <tr><td></td><td valign="top"><a href="Builtin-Functions.html#index-SEGMENT_005fSTART_0028segment_002c-default_0029"><code>SEGMENT_START(<var>segment</var>, <var>default</var>)</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="Builtin-Functions.html#Builtin-Functions">Builtin Functions</a></td></tr>
@@ -890,6 +913,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Options.html#index-standard-Unix-system">standard Unix system</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Entry-Point.html#index-start-of-execution">start of execution</a>:</td><td>&nbsp;</td><td valign="top"><a href="Entry-Point.html#Entry-Point">Entry Point</a></td></tr>
 <tr><td></td><td valign="top"><a href="File-Commands.html#index-STARTUP_0028filename_0029"><code>STARTUP(<var>filename</var>)</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="File-Commands.html#File-Commands">File Commands</a></td></tr>
+<tr><td></td><td valign="top"><a href="ARM.html#index-STM32L4xx-erratum-workaround">STM32L4xx erratum workaround</a>:</td><td>&nbsp;</td><td valign="top"><a href="ARM.html#ARM">ARM</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-strip-all-symbols">strip all symbols</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-strip-debugger-symbols">strip debugger symbols</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-stripping-all-but-some-symbols">stripping all but some symbols</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
@@ -905,6 +929,7 @@ Previous: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-Li
 <tr><td></td><td valign="top"><a href="Symbolic-Constants.html#index-symbolic-constants">symbolic constants</a>:</td><td>&nbsp;</td><td valign="top"><a href="Symbolic-Constants.html#Symbolic-Constants">Symbolic Constants</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-symbols_002c-from-command-line">symbols, from command line</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Expression-Section.html#index-symbols_002c-relocatable-and-absolute">symbols, relocatable and absolute</a>:</td><td>&nbsp;</td><td valign="top"><a href="Expression-Section.html#Expression-Section">Expression Section</a></td></tr>
+<tr><td></td><td valign="top"><a href="Options.html#index-symbols_002c-require-defined">symbols, require defined</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-symbols_002c-retaining-selectively">symbols, retaining selectively</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="Options.html#index-synthesizing-linker">synthesizing linker</a>:</td><td>&nbsp;</td><td valign="top"><a href="Options.html#Options">Options</a></td></tr>
 <tr><td></td><td valign="top"><a href="H8_002f300.html#index-synthesizing-on-H8_002f300">synthesizing on H8/300</a>:</td><td>&nbsp;</td><td valign="top"><a href="H8_002f300.html#H8_002f300">H8/300</a></td></tr>

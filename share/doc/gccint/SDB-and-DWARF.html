@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -81,7 +81,7 @@ Next: <a href="VMS-Debug.html#VMS-Debug" accesskey="n" rel="next">VMS Debug</a>,
 </p>
 <dl>
 <dt><a name="index-SDB_005fDEBUGGING_005fINFO"></a>Macro: <strong>SDB_DEBUGGING_INFO</strong></dt>
-<dd><p>Define this macro if GCC should produce COFF-style debugging output
+<dd><p>Define this macro to 1 if GCC should produce COFF-style debugging output
 for SDB in response to the <samp>-g</samp> option.
 </p></dd></dl>
 
@@ -187,6 +187,12 @@ given <var>size</var>.  The label is known to be defined in the given <var>secti
 <dt><a name="index-ASM_005fOUTPUT_005fDWARF_005fPCREL"></a>Macro: <strong>ASM_OUTPUT_DWARF_PCREL</strong> <em>(<var>stream</var>, <var>size</var>, <var>label</var>)</em></dt>
 <dd><p>A C statement to issue assembly directives that create a self-relative
 reference to the given <var>label</var>, using an integer of the given <var>size</var>.
+</p></dd></dl>
+
+<dl>
+<dt><a name="index-ASM_005fOUTPUT_005fDWARF_005fDATAREL"></a>Macro: <strong>ASM_OUTPUT_DWARF_DATAREL</strong> <em>(<var>stream</var>, <var>size</var>, <var>label</var>)</em></dt>
+<dd><p>A C statement to issue assembly directives that create a reference to the
+given <var>label</var> relative to the dbase, using an integer of the given <var>size</var>.
 </p></dd></dl>
 
 <dl>

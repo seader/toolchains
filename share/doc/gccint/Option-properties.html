@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -390,7 +390,9 @@ value of <samp>-fmath-errno</samp> for languages that do not use
 <dd><p>If not explicitly set, the option is set to the value of
 <samp>-<var>opt</var></samp>; multiple options can be given, separated by
 <code>||</code>.  The third form using <code>&amp;&amp;</code> specifies that the option is
-only set if both <var>opt</var> and <var>opt2</var> are set.
+only set if both <var>opt</var> and <var>opt2</var> are set. The options <var>opt</var>
+and <var>opt2</var> must have the <code>Common</code> property; otherwise, use
+<code>LangEnabledBy</code>.
 </p>
 </dd>
 <dt><code>LangEnabledBy(<var>language</var>, <var>opt</var>)</code></dt>

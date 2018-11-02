@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<!-- Copyright (C) 1988-2015 Free Software Foundation, Inc.
+<!-- Copyright (C) 1988-2017 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -80,7 +80,7 @@ Next: <a href="Statement-and-operand-traversals.html#Statement-and-operand-trave
 
 <p>The first step in adding a new GIMPLE statement code, is
 modifying the file <code>gimple.def</code>, which contains all the GIMPLE
-codes.  Then you must add a corresponding gimple_statement_base subclass
+codes.  Then you must add a corresponding gimple subclass
 located in <code>gimple.h</code>.  This in turn, will require you to add a
 corresponding <code>GTY</code> tag in <code>gsstruct.def</code>, and code to handle
 this tag in <code>gss_for_code</code> which is located in <code>gimple.c</code>.
@@ -93,7 +93,7 @@ in <code>gimple.c</code>.
 <p>You will probably want to create a function to build the new
 gimple statement in <code>gimple.c</code>.  The function should be called
 <code>gimple_build_<var>new-tuple-name</var></code>, and should return the new tuple
-as a pointer to the appropriate gimple_statement_base subclass.
+as a pointer to the appropriate gimple subclass.
 </p>
 <p>If your new statement requires accessors for any members or
 operands it may have, put simple inline accessors in
